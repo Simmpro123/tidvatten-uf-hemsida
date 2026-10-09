@@ -825,8 +825,12 @@
   form.addEventListener('reset', () => setTimeout(updateTotal, 0));
   updateTotal();
 
+  // Visa kundens text som text, aldrig som HTML
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
+    if (submitBtn.disabled) return; // stoppa dubbelklick medan beställningen skickas
     errorBox.classList.remove('show');
     note.classList.remove('show');
     cardNote.classList.remove('show');
@@ -840,7 +844,7 @@
     const name = `${fname} ${lname}`.trim();
     const email = data.get('email');
     const address = `${data.get('address')}, ${data.get('zip')} ${data.get('city')}`;
-    const ref = (fname||'').slice(0,3).toUpperCase() + Math.floor(1000 + Math.random()*9000);
+    const ref = ((fname||'').replace(/[^A-Za-zÅÄÖåäöÉéÜü]/g, '').slice(0,3).toUpperCase() || 'TUF') + Math.floor(1000 + Math.random()*9000);
     const payMethod = data.get('paymethod'); // "swish" eller "card"
     const payMethodLabels = { swish: 'Swish', card: 'Kort' };
 
@@ -874,7 +878,7 @@
     ]).then(function(){
       if (payMethod === 'card') {
         const buyButtonReady = STRIPE_BUY_BUTTON_ID && !STRIPE_BUY_BUTTON_ID.includes('DIN_');
-        cardNote.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
+        cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
           Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas. Boken skickas inom <b>1–2 dagar</b> efter betalning.`;
         if (buyButtonReady) {
           const widget = document.createElement('div');
@@ -891,7 +895,7 @@
         cardNote.classList.add('show');
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
       } else {
-        note.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
+        note.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
           Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande, så skickar vi boken inom <b>1–2 dagar</b> efter att betalningen kommit in.`;
         note.classList.add('show');
         note.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -899,7 +903,7 @@
       form.reset();
     }).catch(function(err){
       console.error('EmailJS-fel:', err);
-      const detail = (err && (err.text || err.message)) ? `<br><span style="opacity:0.8">Feldetalj: ${err.status ? err.status + ' – ' : ''}${err.text || err.message}</span>` : '';
+      const detail = (err && (err.text || err.message)) ? `<br><span style="opacity:0.8">Feldetalj: ${err.status ? err.status + ' – ' : ''}${esc(err.text || err.message)}</span>` : '';
       errorBox.innerHTML = `Något gick fel när bekräftelsen skulle skickas. Kontakta oss gärna direkt på <a href="mailto:${OWNER_EMAIL}">${OWNER_EMAIL}</a> så ordnar vi det manuellt.${detail}`;
       errorBox.classList.add('show');
     }).finally(function(){
