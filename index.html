@@ -382,6 +382,10 @@
   .pay-option:has(input:checked) .dot{border:5.5px solid var(--tide);}
   .pay-option:hover{border-color:var(--shell-soft);}
   .pay-option:has(input:focus-visible){outline:2px solid var(--shell); outline-offset:2px;}
+  .bulk-note{display:flex; gap:10px; align-items:flex-start; margin-top:4px; padding:12px 14px; border-radius:10px; background:var(--shell-pale); font-size:0.88rem; line-height:1.55; color:var(--ink-soft);}
+  .bulk-note svg{flex-shrink:0; width:18px; height:18px; margin-top:1px; color:var(--tide);}
+  .bulk-note b{color:var(--ink);}
+  .bulk-note a{color:var(--tide); font-weight:600;}
   .pay-logo{margin-left:auto; height:36px; width:auto; display:block;}
   .pay-option small{margin-left:auto; font-weight:400; font-size:0.82rem; color:var(--ink-faint);}
 
@@ -695,6 +699,7 @@
                 <option value="3">3 exemplar – 477 kr</option>
                 <option value="4">4 exemplar – 636 kr</option>
               </select>
+              <p class="bulk-note"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 5l7 6 7-6"/></svg><span><b>Vill du köpa fler böcker?</b> Är du företag, skola, förskola eller privatperson och vill beställa fler än 4 exemplar – hör av dig till <a href="mailto:tidvattenuf.info@gmail.com?subject=Större%20beställning%20av%20Under%20Ytan">tidvattenuf.info@gmail.com</a> så ordnar vi det.</span></p>
             </div>
             <div class="field full" role="radiogroup" aria-labelledby="payLabel">
               <span class="label" id="payLabel">Betalsätt</span>
