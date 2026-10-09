@@ -628,12 +628,12 @@
       <div class="section-head reveal">
         <span class="eyebrow">Köp boken</span>
         <h2>Ta hem <em>Lio</em></h2>
-        <p>Fyll i formuläret så skickar vi bekräftelse och betalningsuppgifter till din e-post. Boken skickas inom 1–2 dagar efter att betalningen är mottagen.</p>
+        <p>Fyll i formuläret och betala direkt med Swish eller kort. Boken skickas inom 1–2 dagar efter att betalningen är mottagen.</p>
       </div>
 
       <ol class="steps reveal reveal-1">
         <li><div><b>Beställ</b>Fyll i formuläret nedan.</div></li>
-        <li><div><b>Betala</b>Med Swish eller kort – uppgifterna kommer på mejlen.</div></li>
+        <li><div><b>Betala</b>Swish-appen öppnas direkt med allt ifyllt – eller betala med kort.</div></li>
         <li><div><b>Läs tillsammans</b>Boken skickas inom 1–2 dagar efter betalning.</div></li>
       </ol>
 
@@ -664,7 +664,7 @@
 
         <form class="order-form reveal reveal-2" id="orderForm">
           <h3>Din beställning</h3>
-          <p>Vi hör av oss på mejlen med Swish-nummer och OCR/meddelande att ange vid betalning.</p>
+          <p>Fyll i dina uppgifter och välj betalsätt. När du skickat beställningen betalar du direkt – du får även en bekräftelse på mejlen.</p>
 
           <div class="form-grid">
             <div class="field">
@@ -726,7 +726,7 @@
           </div>
 
           <button type="submit" class="btn form-submit" id="submitBtn">Skicka beställning</button>
-          <p class="form-fineprint">Du betalar först när du fått bekräftelsen på mejlen.</p>
+          <p class="form-fineprint">Med Swish öppnas appen direkt med belopp och referens ifyllt.</p>
 
           <div class="swish-note" id="swishNote" role="status"></div>
           <div class="card-note" id="cardNote" role="status"></div>
@@ -893,31 +893,7 @@
     const payMethodLabels = { swish: 'Swish', card: 'Kort' };
     const payUrl = `${STRIPE_LINKS[qty]}?client_reference_id=${encodeURIComponent(ref)}&prefilled_email=${encodeURIComponent(email)}`;
 
-    // Betalningstexter till mejlen – mallen i EmailJS kan inte välja text själv, så den skickas med härifrån
-    const payText = payMethod === 'card' ? {
-      pay_heading: 'Betalning med kort',
-      pay_label: 'Betalsätt',
-      pay_value: 'Kort via Stripe',
-      ref_label: 'Ordernummer',
-      step1: `Betala ${total} kr med kort på Stripes betalsida som öppnades när du beställde.`,
-      step2: `Hann du inte betala? Gör det här: ${payUrl}`,
-      step3: `Ditt ordernummer är ${ref} – ange det om du kontaktar oss.`,
-      step4: 'När betalningen är genomförd skickar vi boken inom 1–2 dagar.',
-      pay_note: 'Boken skickas först när kortbetalningen är genomförd.'
-    } : {
-      pay_heading: 'Swisha för att slutföra ditt köp',
-      pay_label: 'Swishnummer',
-      pay_value: SWISH_NUMBER,
-      ref_label: 'Meddelande i Swish (måste anges)',
-      step1: 'Öppna Swish-appen.',
-      step2: `Swisha ${total} kr till ${SWISH_NUMBER}.`,
-      step3: `Skriv ${ref} i meddelandefältet – det är obligatoriskt.`,
-      step4: 'När betalningen har kommit in skickar vi boken inom 1–2 dagar.',
-      pay_note: `Utan ${ref} i meddelandet kan vi inte koppla din betalning till beställningen, och då kan boken inte skickas.`
-    };
-
     const templateParams = {
-      ...payText,
       books_price: unit * qty,
       order_ref: ref,
       customer_name: name,
@@ -961,7 +937,7 @@
               <div class="swish-qr-code">${swishQrSvg(total, ref)}</div>
               <p>Sitter du vid en dator? <b>Skanna QR-koden</b> med Swish-appen i mobilen.</p>
             </div>
-            <p class="swish-pay-small">Belopp, nummer och referens fylls i automatiskt. Fungerar det inte? Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande.</p>
+            <p class="swish-pay-small">Belopp och referens fylls i automatiskt – du behöver bara godkänna betalningen i Swish.</p>
           </div>
           Boken skickas inom <b>1–2 dagar</b> efter att betalningen kommit in.`;
         note.classList.add('show');

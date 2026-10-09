@@ -7,15 +7,11 @@
   <tr>
     <td align="center" style="padding:32px 12px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px; background:#FFFDF9; border-radius:16px; border:1px solid #E6DCCB; font-family:Arial, Helvetica, sans-serif; color:#1C1A3A;">
-
-        <!-- Logga -->
         <tr>
           <td align="center" style="padding:36px 32px 8px;">
             <img src="https://tidvatten.netlify.app/assets/logo-email.png" width="110" alt="Tidvatten UF" style="display:block; width:110px; height:auto; border:0;">
           </td>
         </tr>
-
-        <!-- Rubrik -->
         <tr>
           <td align="center" style="padding:16px 32px 4px;">
             <h1 style="margin:0; font-family:Georgia, 'Times New Roman', serif; font-size:26px; line-height:1.25; font-weight:normal; color:#15104F;">Tack för din beställning!</h1>
@@ -24,89 +20,19 @@
         <tr>
           <td align="center" style="padding:8px 40px 28px; font-size:15px; line-height:1.6; color:#57566F;">
             Hej {{customer_name}}! Vi har tagit emot din beställning av bilderboken <strong style="color:#1C1A3A;">Under Ytan</strong>.<br>
-            <strong style="color:#1C1A3A;">Sista steget är betalningen</strong> – följ instruktionerna nedan så skickar vi boken till dig.
+            Här är en sammanfattning av din beställning.
           </td>
         </tr>
-
-        <!-- Betalning -->
         <tr>
-          <td style="padding:0 24px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E7EBFF; border:2px solid #5470FF; border-radius:12px;">
-              <tr>
-                <td style="padding:22px 24px 6px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#2A1DB5;">
-                  {{pay_heading}}
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:0 24px 16px;">
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:15px;">
-                    <tr>
-                      <td style="padding:8px 0; color:#57566F;">Belopp att betala</td>
-                      <td align="right" style="padding:8px 0; font-size:22px; font-weight:bold; color:#15104F;">{{total_price}} kr</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:8px 0; border-top:1px solid #C9D1FF; color:#57566F;">{{pay_label}}</td>
-                      <td align="right" style="padding:8px 0; border-top:1px solid #C9D1FF; font-size:17px; font-weight:bold; color:#15104F;">{{pay_value}}</td>
-                    </tr>
-                    <tr>
-                      <td style="padding:8px 0; border-top:1px solid #C9D1FF; color:#57566F;">{{ref_label}}</td>
-                      <td align="right" style="padding:8px 0; border-top:1px solid #C9D1FF;">
-                        <span style="display:inline-block; padding:6px 12px; background:#15104F; color:#FFFFFF; border-radius:6px; font-family:'Courier New', Courier, monospace; font-size:18px; font-weight:bold; letter-spacing:1px;">{{order_ref}}</span>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <!-- Steg för steg -->
-              <tr>
-                <td style="padding:0 16px 12px;">
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF; border-radius:8px; font-size:15px; line-height:1.5; color:#1C1A3A;">
-                    <tr>
-                      <td colspan="2" style="padding:14px 16px 4px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">Så här gör du</td>
-                    </tr>
-                    <tr>
-                      <td width="40" valign="top" style="padding:8px 0 8px 16px;"><span style="display:inline-block; width:24px; height:24px; line-height:24px; text-align:center; border-radius:12px; background:#2A1DB5; color:#FFFFFF; font-size:13px; font-weight:bold;">1</span></td>
-                      <td valign="top" style="padding:10px 16px 8px 0;">{{step1}}</td>
-                    </tr>
-                    <tr>
-                      <td width="40" valign="top" style="padding:8px 0 8px 16px;"><span style="display:inline-block; width:24px; height:24px; line-height:24px; text-align:center; border-radius:12px; background:#2A1DB5; color:#FFFFFF; font-size:13px; font-weight:bold;">2</span></td>
-                      <td valign="top" style="padding:10px 16px 8px 0;"><strong>{{step2}}</strong></td>
-                    </tr>
-                    <tr>
-                      <td width="40" valign="top" style="padding:8px 0 8px 16px;"><span style="display:inline-block; width:24px; height:24px; line-height:24px; text-align:center; border-radius:12px; background:#2A1DB5; color:#FFFFFF; font-size:13px; font-weight:bold;">3</span></td>
-                      <td valign="top" style="padding:10px 16px 8px 0;"><strong>{{step3}}</strong></td>
-                    </tr>
-                    <tr>
-                      <td width="40" valign="top" style="padding:8px 0 14px 16px;"><span style="display:inline-block; width:24px; height:24px; line-height:24px; text-align:center; border-radius:12px; background:#2A1DB5; color:#FFFFFF; font-size:13px; font-weight:bold;">4</span></td>
-                      <td valign="top" style="padding:10px 16px 14px 0;">{{step4}}</td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:0 16px 16px;">
-                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFE97A; border:1px solid #E8C93A; border-radius:8px;">
-                    <tr>
-                      <td style="padding:14px 16px; font-size:14px; line-height:1.55; color:#3D3200;">
-                        <strong>⚠️ Viktigt:</strong> {{pay_note}}
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-        <!-- Ordersammanfattning -->
-        <tr>
-          <td style="padding:32px 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">
-            Din beställning
-          </td>
+          <td style="padding:0 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">Din beställning</td>
         </tr>
         <tr>
           <td style="padding:0 32px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:15px; color:#1C1A3A;">
+              <tr>
+                <td style="padding:10px 0; border-bottom:1px solid #EFE7DA; color:#57566F;">Ordernummer</td>
+                <td align="right" style="padding:10px 0; border-bottom:1px solid #EFE7DA;"><span style="display:inline-block; padding:4px 10px; background:#15104F; color:#FFFFFF; border-radius:6px; font-family:'Courier New', Courier, monospace; font-size:15px; font-weight:bold; letter-spacing:1px;">{{order_ref}}</span></td>
+              </tr>
               <tr>
                 <td style="padding:10px 0; border-bottom:1px solid #EFE7DA;">Under Ytan × {{qty}} <span style="color:#8E8CA3;">({{unit_price}} kr/st)</span></td>
                 <td align="right" style="padding:10px 0; border-bottom:1px solid #EFE7DA;">{{books_price}} kr</td>
@@ -116,18 +42,18 @@
                 <td align="right" style="padding:10px 0; border-bottom:1px solid #EFE7DA;">{{shipping}} kr</td>
               </tr>
               <tr>
+                <td style="padding:10px 0; border-bottom:1px solid #EFE7DA; color:#57566F;">Betalsätt</td>
+                <td align="right" style="padding:10px 0; border-bottom:1px solid #EFE7DA;">{{pay_method}}</td>
+              </tr>
+              <tr>
                 <td style="padding:12px 0; font-weight:bold;">Totalt</td>
                 <td align="right" style="padding:12px 0; font-weight:bold; font-size:17px;">{{total_price}} kr</td>
               </tr>
             </table>
           </td>
         </tr>
-
-        <!-- Leverans -->
         <tr>
-          <td style="padding:24px 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">
-            Leverans
-          </td>
+          <td style="padding:24px 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">Leverans</td>
         </tr>
         <tr>
           <td style="padding:0 32px; font-size:15px; line-height:1.6; color:#1C1A3A;">
@@ -135,23 +61,18 @@
             <p style="margin:10px 0 0; color:#57566F;">Boken skickas inom <strong style="color:#1C1A3A;">1–2 dagar</strong> efter att betalningen har kommit in.</p>
           </td>
         </tr>
-
-        <!-- Kontakt -->
         <tr>
           <td style="padding:28px 32px 32px; font-size:15px; line-height:1.6; color:#57566F;">
             Har du frågor? Svara på det här mejlet eller skriv till <a href="mailto:tidvattenuf.info@gmail.com" style="color:#2A1DB5;">tidvattenuf.info@gmail.com</a>.
             <p style="margin:18px 0 0; color:#1C1A3A;">Varma hälsningar,<br><strong>Simon &amp; Nathalie</strong><br>Tidvatten UF</p>
           </td>
         </tr>
-
-        <!-- Sidfot -->
         <tr>
           <td align="center" style="padding:20px 32px; background:#15104F; border-radius:0 0 15px 15px; font-size:12px; line-height:1.6; color:#A9B6FF;">
             Tidvatten UF · Ett UF-företag inom Ung Företagsamhet<br>
             <a href="https://tidvatten.netlify.app" style="color:#FFFFFF; text-decoration:none;">tidvatten.netlify.app</a>
           </td>
         </tr>
-
       </table>
     </td>
   </tr>
