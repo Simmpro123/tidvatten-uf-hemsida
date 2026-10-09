@@ -1,0 +1,124 @@
+<!-- EmailJS-mall: ny beställning till företaget (template_0svvp2p)
+     Ämne:      Ny beställning {{order_ref}} – {{qty}} st, {{total_price}} kr ({{pay_method}})
+     Till:      tidvattenuf.info@gmail.com
+     Svara till: {{reply_to}}   (då svarar ni direkt till kunden) -->
+<div style="margin:0; padding:0; background:#F7F2EA;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F2EA;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px; background:#FFFDF9; border-radius:16px; border:1px solid #E6DCCB; font-family:Arial, Helvetica, sans-serif; color:#1C1A3A;">
+
+        <!-- Logga + rubrik -->
+        <tr>
+          <td style="padding:28px 32px 0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td width="64" valign="middle"><img src="https://tidvatten.netlify.app/assets/logo-email.png" width="56" alt="Tidvatten UF" style="display:block; width:56px; height:auto; border:0;"></td>
+                <td valign="middle" style="padding-left:14px;">
+                  <div style="font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#2A1DB5;">Ny beställning</div>
+                  <div style="font-family:Georgia, 'Times New Roman', serif; font-size:24px; color:#15104F;">{{order_ref}}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Nyckeltal -->
+        <tr>
+          <td style="padding:24px 24px 0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E7EBFF; border-radius:12px;">
+              <tr>
+                <td align="center" width="33%" style="padding:18px 8px;">
+                  <div style="font-size:12px; color:#57566F;">Antal</div>
+                  <div style="font-size:22px; font-weight:bold; color:#15104F;">{{qty}} st</div>
+                </td>
+                <td align="center" width="34%" style="padding:18px 8px; border-left:1px solid #C9D1FF; border-right:1px solid #C9D1FF;">
+                  <div style="font-size:12px; color:#57566F;">Totalt</div>
+                  <div style="font-size:22px; font-weight:bold; color:#15104F;">{{total_price}} kr</div>
+                </td>
+                <td align="center" width="33%" style="padding:18px 8px;">
+                  <div style="font-size:12px; color:#57566F;">Betalsätt</div>
+                  <div style="font-size:22px; font-weight:bold; color:#15104F;">{{pay_method}}</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Att göra -->
+        <tr>
+          <td style="padding:16px 24px 0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FFE97A; border:1px solid #E8C93A; border-radius:8px;">
+              <tr>
+                <td style="padding:14px 16px; font-size:14px; line-height:1.6; color:#3D3200;">
+                  <strong>Att göra:</strong><br>
+                  1. Kontrollera att <strong>{{total_price}} kr</strong> har kommit in via <strong>{{pay_method}}</strong> med referensen <strong>{{order_ref}}</strong> (Swish-appen eller Stripe → Betalningar).<br>
+                  2. Skicka boken inom 1–2 dagar efter betalningen.<br>
+                  3. Svara på det här mejlet om ni behöver kontakta kunden – svaret går direkt till kunden.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Kund -->
+        <tr>
+          <td style="padding:28px 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">
+            Kund &amp; leveransadress
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:15px; color:#1C1A3A;">
+              <tr>
+                <td width="110" style="padding:8px 0; border-bottom:1px solid #EFE7DA; color:#8E8CA3;">Namn</td>
+                <td style="padding:8px 0; border-bottom:1px solid #EFE7DA; font-weight:bold;">{{customer_name}}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0; border-bottom:1px solid #EFE7DA; color:#8E8CA3;">E-post</td>
+                <td style="padding:8px 0; border-bottom:1px solid #EFE7DA;"><a href="mailto:{{customer_email}}" style="color:#2A1DB5;">{{customer_email}}</a></td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0; color:#8E8CA3;">Adress</td>
+                <td style="padding:8px 0;">{{customer_address}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Order -->
+        <tr>
+          <td style="padding:24px 32px 8px; font-size:12px; font-weight:bold; letter-spacing:1.5px; text-transform:uppercase; color:#8E8CA3;">
+            Order
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 32px 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:15px; color:#1C1A3A;">
+              <tr>
+                <td style="padding:8px 0; border-bottom:1px solid #EFE7DA;">Under Ytan × {{qty}} ({{unit_price}} kr/st)</td>
+                <td align="right" style="padding:8px 0; border-bottom:1px solid #EFE7DA;">{{books_price}} kr</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0; border-bottom:1px solid #EFE7DA;">Frakt</td>
+                <td align="right" style="padding:8px 0; border-bottom:1px solid #EFE7DA;">{{shipping}} kr</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0; font-weight:bold;">Totalt</td>
+                <td align="right" style="padding:10px 0; font-weight:bold;">{{total_price}} kr</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:16px 32px; background:#15104F; border-radius:0 0 15px 15px; font-size:12px; color:#A9B6FF;">
+            Skickat automatiskt från beställningsformuläret på tidvatten.netlify.app
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</div>

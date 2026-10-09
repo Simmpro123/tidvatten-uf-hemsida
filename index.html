@@ -854,8 +854,26 @@
     const ref = ((fname||'').normalize('NFD').replace(/[^A-Za-z]/g, '').slice(0,3).toUpperCase() || 'TUF') + Math.floor(1000 + Math.random()*9000);
     const payMethod = data.get('paymethod'); // "swish" eller "card"
     const payMethodLabels = { swish: 'Swish', card: 'Kort' };
+    const payUrl = `${STRIPE_LINKS[qty]}?client_reference_id=${encodeURIComponent(ref)}&prefilled_email=${encodeURIComponent(email)}`;
+
+    // Betalningstexter till mejlen – mallen i EmailJS kan inte välja text själv, så den skickas med härifrån
+    const payText = payMethod === 'card' ? {
+      pay_heading: 'Betalning med kort',
+      pay_label: 'Betalsätt',
+      pay_value: 'Kort via Stripe',
+      ref_label: 'Ordernummer',
+      pay_note: `Boken skickas när kortbetalningen är genomförd. Hann du inte betala? Gör det här: ${payUrl}`
+    } : {
+      pay_heading: 'Swisha för att slutföra ditt köp',
+      pay_label: 'Swishnummer',
+      pay_value: SWISH_NUMBER,
+      ref_label: 'Meddelande i Swish (måste anges)',
+      pay_note: `Boken skickas först när vi har fått din betalning. Du måste skriva ${ref} i meddelandefältet i Swish – annars kan vi inte koppla betalningen till din beställning.`
+    };
 
     const templateParams = {
+      ...payText,
+      books_price: unit * qty,
       order_ref: ref,
       customer_name: name,
       customer_email: email,
@@ -884,7 +902,6 @@
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CUSTOMER, templateParams)
     ]).then(function(){
       if (payMethod === 'card') {
-        const payUrl = `${STRIPE_LINKS[qty]}?client_reference_id=${encodeURIComponent(ref)}&prefilled_email=${encodeURIComponent(email)}`;
         cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
           Sista steget: betala <b>${total} kr</b> med kort via Stripe. Din referens är <b>${ref}</b>. Boken skickas inom <b>1–2 dagar</b> efter betalning.
           <a class="btn pay-btn" href="${payUrl}" target="_blank" rel="noopener">Betala ${total} kr med kort <span class="arrow" aria-hidden="true">→</span></a>`;
