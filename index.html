@@ -9,7 +9,9 @@
 <meta name="theme-color" content="#F7F2EA">
 <meta property="og:title" content="Under Ytan – en bilderbok av Tidvatten UF">
 <meta property="og:description" content="En bilderbok om känslor som inte alltid syns utanpå. Beställ för 159 kr.">
-<meta property="og:image" content="assets/lio-standing.png">
+<meta property="og:image" content="https://tidvatten.netlify.app/assets/lio-standing.png">
+<meta property="og:url" content="https://tidvatten.netlify.app/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,50;1,9..144,400..700,50&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -269,7 +271,9 @@
   }
   .avatar.s{background:var(--shell-pale); color:var(--tide);}
   .avatar.n{background:#FBE3E1; color:#9C4A44;}
-  .team-card .role{color:var(--ink-faint); font-weight:600; font-size:0.76rem; text-transform:uppercase; letter-spacing:0.12em;}
+  .team-card .role{color:var(--ink-faint); font-weight:600; font-size:0.76rem; text-transform:uppercase; letter-spacing:0.12em; overflow-wrap:anywhere; hyphens:auto;}
+  .team-card, .team-top > div{min-width:0;}
+  @media (max-width:560px){ .team-top{flex-direction:column; align-items:flex-start; gap:14px;} }
   .team-card h3{font-size:1.45rem; font-weight:500; letter-spacing:-0.02em;}
   .team-card > p{color:var(--ink-soft); line-height:1.7;}
 
@@ -423,7 +427,9 @@
   .swish-qr-code svg{display:block; width:100%; height:100%;}
   .swish-qr p{font-size:0.92rem; color:var(--ink-soft);}
   .swish-pay-small{margin-top:14px; font-size:0.82rem; color:var(--ink-faint); text-align:left;}
-  @media (max-width:860px){ .swish-qr{display:none;} }
+  .swish-qr{justify-content:center;}
+  .pay-option{min-width:0;}
+  @media (max-width:400px){ .pay-options{grid-template-columns:1fr;} }
   .form-error{background:#FBEAE8; border:1px solid #F0C6C1; color:#8a3f38;}
   .form-error a{color:#8a3f38; font-weight:600;}
 
@@ -598,7 +604,7 @@
           <div class="team-top">
             <img class="avatar" src="assets/nathalie.jpg" alt="Porträtt av Nathalie Eriksson" width="72" height="72">
             <div>
-              <div class="role">Produktionschef &amp; marknadsföringsansvarig</div>
+              <div class="role">Produktionschef &amp; marknads&shy;förings&shy;ansvarig</div>
               <h3>Nathalie Eriksson</h3>
             </div>
           </div>
@@ -669,11 +675,11 @@
           <div class="form-grid">
             <div class="field">
               <label for="fname">Förnamn</label>
-              <input id="fname" name="fname" type="text" required autocomplete="given-name">
+              <input id="fname" name="fname" type="text" required pattern=".*\S.*" title="Fältet får inte vara tomt" autocomplete="given-name">
             </div>
             <div class="field">
               <label for="lname">Efternamn</label>
-              <input id="lname" name="lname" type="text" required autocomplete="family-name">
+              <input id="lname" name="lname" type="text" required pattern=".*\S.*" title="Fältet får inte vara tomt" autocomplete="family-name">
             </div>
             <div class="field full">
               <label for="email">E-post</label>
@@ -681,15 +687,15 @@
             </div>
             <div class="field full">
               <label for="address">Adress</label>
-              <input id="address" name="address" type="text" required autocomplete="street-address">
+              <input id="address" name="address" type="text" required pattern=".*\S.*" title="Fältet får inte vara tomt" autocomplete="street-address">
             </div>
             <div class="field">
               <label for="zip">Postnummer</label>
-              <input id="zip" name="zip" type="text" required autocomplete="postal-code" inputmode="numeric">
+              <input id="zip" name="zip" type="text" required pattern="\s*\d{3}\s?\d{2}\s*" title="Ange ett svenskt postnummer, t.ex. 123 45" placeholder="123 45" autocomplete="postal-code" inputmode="numeric">
             </div>
             <div class="field">
               <label for="city">Ort</label>
-              <input id="city" name="city" type="text" required autocomplete="address-level2">
+              <input id="city" name="city" type="text" required pattern=".*\S.*" title="Fältet får inte vara tomt" autocomplete="address-level2">
             </div>
             <div class="field full">
               <label for="qty">Antal exemplar</label>
@@ -852,7 +858,9 @@
   updateTotal();
 
   /* ---------- Swish: förifylld betalning (nummer, belopp och referens låsta) ---------- */
-  const IS_MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  // Mobil/surfplatta (nya iPads säger att de är en Mac, men har pekskärm)
+  const IS_MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  function openSwishApp(link){ window.location.href = link; }
   const swishPayee = () => SWISH_NUMBER.replace(/\D/g, '');
   // Öppnar Swish-appen med allt ifyllt
   function swishAppLink(amount, ref){
@@ -880,6 +888,11 @@
 
     const data = new FormData(form);
     const qty = Number(data.get('qty'));
+    if (!STRIPE_LINKS[qty]) { // bara 1–4 exemplar går att beställa här
+      errorBox.innerHTML = `Välj mellan 1 och 4 exemplar. Vill du beställa fler? Mejla <a href="mailto:${OWNER_EMAIL}">${OWNER_EMAIL}</a>.`;
+      errorBox.classList.add('show');
+      return;
+    }
     const unit = BOOK_PRICE;
     const total = unit * qty + SHIPPING;
     const fname = data.get('fname');
@@ -918,32 +931,42 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Skickar...';
 
-    Promise.all([
+    // Beställningen räknas som mottagen när mejlet till oss gått fram.
+    // Misslyckas bara kundens bekräftelse (t.ex. felstavad adress) får kunden ändå betala.
+    Promise.allSettled([
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_OWNER, templateParams),
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CUSTOMER, templateParams)
-    ]).then(function(){
+    ]).then(function([ownerRes, customerRes]){
+      if (ownerRes.status === 'rejected') throw ownerRes.reason;
+      const confirmText = customerRes.status === 'fulfilled'
+        ? `En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>`
+        : `<span class="spam-tip"><span aria-hidden="true">⚠️</span> Vi kunde inte skicka en bekräftelse till <strong>${esc(email)}</strong> – stämmer adressen? Din beställning är ändå mottagen. Spara din referens: <strong>${ref}</strong></span>`;
       if (payMethod === 'card') {
-        cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
+        cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. ${confirmText}
           Sista steget: betala <b>${total} kr</b> med kort via Stripe. Din referens är <b>${ref}</b>. Boken skickas inom <b>1–2 dagar</b> efter betalning.
           <a class="btn pay-btn" href="${payUrl}" target="_blank" rel="noopener">Betala ${total} kr med kort <span class="arrow" aria-hidden="true">→</span></a>`;
         cardNote.classList.add('show');
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
       } else {
-        note.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
+        const qrSvg = swishQrSvg(total, ref);
+        // Mobil: knapp som öppnar appen. Dator: QR-kod att skanna (swish:// fungerar inte på dator).
+        const payPart = (IS_MOBILE || !qrSvg)
+          ? `<a class="btn swish-btn" href="${swishAppLink(total, ref)}">Öppna Swish och betala ${total} kr</a>`
+          : `<div class="swish-qr">
+               <div class="swish-qr-code">${qrSvg}</div>
+               <p><b>Öppna Swish i mobilen och skanna QR-koden.</b><br>Betala ${total} kr – belopp och referens fylls i automatiskt.</p>
+             </div>`;
+        note.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. ${confirmText}
           <div class="swish-pay">
             <p class="swish-pay-title">Sista steget: betala med Swish</p>
-            <a class="btn swish-btn" href="${swishAppLink(total, ref)}">Öppna Swish och betala ${total} kr</a>
-            <div class="swish-qr">
-              <div class="swish-qr-code">${swishQrSvg(total, ref)}</div>
-              <p>Sitter du vid en dator? <b>Skanna QR-koden</b> med Swish-appen i mobilen.</p>
-            </div>
+            ${payPart}
             <p class="swish-pay-small">Belopp och referens fylls i automatiskt – du behöver bara godkänna betalningen i Swish.</p>
           </div>
           Boken skickas inom <b>1–2 dagar</b> efter att betalningen kommit in.`;
         note.classList.add('show');
         note.scrollIntoView({behavior:'smooth', block:'nearest'});
         // På mobilen öppnas Swish direkt
-        if (IS_MOBILE) setTimeout(() => { window.location.href = swishAppLink(total, ref); }, 600);
+        if (IS_MOBILE) setTimeout(() => openSwishApp(swishAppLink(total, ref)), 600);
       }
       form.reset();
     }).catch(function(err){
