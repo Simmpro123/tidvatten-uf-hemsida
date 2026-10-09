@@ -611,13 +611,13 @@
       <div class="section-head reveal">
         <span class="eyebrow">Köp boken</span>
         <h2>Ta hem <em>Lio</em></h2>
-        <p>Fyll i formuläret så skickar vi bekräftelse och betalningsuppgifter till din e-post. Boken skickas när betalningen är mottagen.</p>
+        <p>Fyll i formuläret så skickar vi bekräftelse och betalningsuppgifter till din e-post. Boken skickas inom 1–2 dagar efter att betalningen är mottagen.</p>
       </div>
 
       <ol class="steps reveal reveal-1">
         <li><div><b>Beställ</b>Fyll i formuläret nedan.</div></li>
         <li><div><b>Betala</b>Med Swish eller kort – uppgifterna kommer på mejlen.</div></li>
-        <li><div><b>Läs tillsammans</b>Boken skickas när betalningen är mottagen.</div></li>
+        <li><div><b>Läs tillsammans</b>Boken skickas inom 1–2 dagar efter betalning.</div></li>
       </ol>
 
       <div class="buy-grid">
@@ -634,7 +634,7 @@
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Inbunden bilderbok</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skriven för barn, gärna tillsammans med en vuxen</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Betala med Swish eller kort</li>
-              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skickas inom Sverige</li>
+              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skickas inom 1–2 dagar, i hela Sverige</li>
             </ul>
 
             <div class="shipping-row">
@@ -875,7 +875,7 @@
       if (payMethod === 'card') {
         const buyButtonReady = STRIPE_BUY_BUTTON_ID && !STRIPE_BUY_BUTTON_ID.includes('DIN_');
         cardNote.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
-          Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas.`;
+          Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas. Boken skickas inom <b>1–2 dagar</b> efter betalning.`;
         if (buyButtonReady) {
           const widget = document.createElement('div');
           widget.style.marginTop = '16px';
@@ -892,7 +892,7 @@
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
       } else {
         note.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
-          Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande, så skickar vi boken så fort betalningen kommit in.`;
+          Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande, så skickar vi boken inom <b>1–2 dagar</b> efter att betalningen kommit in.`;
         note.classList.add('show');
         note.scrollIntoView({behavior:'smooth', block:'nearest'});
       }
