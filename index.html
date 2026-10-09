@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tidvatten UF presenterar Under Ytan, en bilderbok om det man inte kan se</title>
+<link rel="icon" type="image/png" href="assets/logo-mark.png">
+<meta name="description" content="Under Ytan är en bilderbok om osynliga sjukdomar och stora känslor, skapad av Tidvatten UF. Beställ ditt exemplar för 189 kr.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<style>
+  :root{
+    --beige: #FAF6EE;
+    --beige-deep: #F1E9D8;
+    --beige-deeper: #E8DEC6;
+    --navy: #122844;
+    --navy-deep: #0B1B30;
+    --ink: #1E2D40;
+    --ink-soft: #5C6B7E;
+    --ink-faint: #93A1B2;
+    --sky: #3CA4DE;
+    --sky-deep: #1D6FA0;
+    --sky-pale: #E7F3FB;
+    --line: rgba(18,40,68,0.10);
+    --line-soft: rgba(18,40,68,0.06);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --max: 1200px;
+    --shadow: 0 10px 34px rgba(18,40,68,0.08);
+    --shadow-lg: 0 24px 60px rgba(18,40,68,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--beige);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--navy);
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px; position:relative;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .reveal-1{transition-delay:.05s;}
+  .reveal-2{transition-delay:.14s;}
+  .reveal-3{transition-delay:.22s;}
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(250,246,238,0);
+    border-bottom:1px solid transparent;
+    transition:background .35s ease, border-color .35s ease, box-shadow .35s ease, padding .3s ease;
+  }
+  header.scrolled{
+    background:rgba(250,246,238,0.86);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 6px 24px rgba(18,40,68,0.06);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px;
+    max-width:var(--max); margin:0 auto;
+    transition:padding .3s ease;
+  }
+  header.scrolled .nav{padding:14px 32px;}
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:800;
+    font-size:1.15rem;
+    text-decoration:none;
+    color:var(--navy);
+    display:flex; align-items:center; gap:10px;
+    letter-spacing:-0.01em;
+  }
+  .brand .logo-mark{height:38px; width:auto; display:block;}
+  .footer-brand{display:inline-flex; margin-bottom:14px;}
+  .footer-brand .logo-full{height:58px; width:auto; display:block;}
+  nav.primary-nav ul{list-style:none; display:flex; gap:38px; margin:0; padding:0;}
+  nav.primary-nav ul a{
+    text-decoration:none; color:var(--ink-soft); font-size:0.95rem; font-weight:600;
+    position:relative; padding:4px 2px;
+    transition:color .2s ease;
+  }
+  nav.primary-nav ul a::after{
+    content:''; position:absolute; left:0; right:0; bottom:-4px; height:2px;
+    background:var(--sky); transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  nav.primary-nav ul a:hover{color:var(--navy);}
+  nav.primary-nav ul a:hover::after, nav.primary-nav ul a:focus-visible::after{transform:scaleX(1);}
+  .nav-cta{
+    background:var(--navy); color:#fff !important; padding:12px 24px; border-radius:100px;
+    font-weight:700; font-size:0.92rem; text-decoration:none;
+    transition:background .2s ease, transform .2s ease, box-shadow .2s ease;
+    box-shadow:0 4px 14px rgba(18,40,68,0.18);
+  }
+  .nav-cta:hover{background:var(--sky-deep); transform:translateY(-2px); box-shadow:0 8px 20px rgba(29,111,160,0.3);}
+
+  .nav-toggle{
+    display:none; background:none; border:none; cursor:pointer; padding:8px;
+    flex-direction:column; gap:5px;
+  }
+  .nav-toggle span{width:22px; height:2px; background:var(--navy); display:block; border-radius:2px; transition:transform .25s ease, opacity .25s ease;}
+  .mobile-panel{
+    display:none; position:fixed; top:0; right:0; bottom:0; width:min(320px,80vw);
+    background:var(--beige); z-index:110; box-shadow:-10px 0 40px rgba(18,40,68,0.2);
+    padding:28px 28px; flex-direction:column; gap:28px;
+    transform:translateX(100%); transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .mobile-panel.open{transform:translateX(0);}
+  .mobile-panel-close{align-self:flex-end; background:none; border:none; font-size:1.6rem; color:var(--navy); cursor:pointer; line-height:1;}
+  .mobile-panel ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:22px;}
+  .mobile-panel ul a{text-decoration:none; color:var(--navy); font-size:1.15rem; font-weight:700;}
+  .mobile-overlay{display:none; position:fixed; inset:0; background:rgba(11,27,48,0.4); z-index:105; opacity:0; transition:opacity .3s ease;}
+  .mobile-overlay.open{display:block; opacity:1;}
+
+  @media (max-width:860px){
+    nav.primary-nav{display:none;}
+    .nav-cta{display:none;}
+    .nav-toggle{display:flex;}
+    .mobile-panel{display:flex;}
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--navy); color:#fff; text-decoration:none;
+    padding:16px 30px; border-radius:100px; font-weight:700; font-size:1rem;
+    border:none; cursor:pointer;
+    transition:background .25s ease, transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 6px 20px rgba(18,40,68,0.18);
+  }
+  .btn:hover{background:var(--sky-deep); transform:translateY(-3px); box-shadow:0 14px 30px rgba(29,111,160,0.28);}
+  .btn-ghost{
+    background:none; color:var(--navy); text-decoration:none; font-weight:700;
+    padding:16px 6px; font-size:1rem; display:inline-flex; align-items:center; gap:8px;
+    position:relative;
+  }
+  .btn-ghost::after{
+    content:''; position:absolute; left:6px; right:6px; bottom:10px; height:2px;
+    background:var(--sky); transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+  }
+  .btn-ghost:hover::after{transform:scaleX(1);}
+  .btn-ghost:hover{color:var(--sky-deep);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:168px 0 100px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-blob{
+    position:absolute; border-radius:50%; filter:blur(60px); pointer-events:none; z-index:0;
+  }
+  .hero-blob.one{width:520px; height:520px; top:-180px; right:-120px; background:radial-gradient(circle, rgba(60,164,222,0.28), rgba(60,164,222,0) 70%);}
+  .hero-blob.two{width:420px; height:420px; bottom:-200px; left:-140px; background:radial-gradient(circle, rgba(18,40,68,0.10), rgba(18,40,68,0) 70%);}
+  .hero .wrap{
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;
+    position:relative; z-index:1;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:0.8rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--sky-deep); margin-bottom:22px;
+    background:var(--sky-pale); padding:8px 16px; border-radius:100px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--sky);}
+  .hero h1{
+    font-size:clamp(2.5rem, 4.8vw, 3.9rem);
+    line-height:1.08;
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:600; color:var(--sky-deep);
+  }
+  .hero-book-title{
+    font-family:'Fraunces', serif; font-weight:600; font-style:italic;
+    font-size:1.1rem; color:var(--sky-deep); margin-bottom:20px;
+    letter-spacing:0.01em;
+  }
+  .hero-lede{
+    font-size:1.15rem; line-height:1.65; color:var(--ink-soft); max-width:48ch; margin-bottom:38px;
+  }
+  .hero-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+
+  .hero-art{
+    position:relative;
+    display:flex; justify-content:center; align-items:center;
+  }
+  .hero-art-card{
+    position:relative; background:#fff; border-radius:28px;
+    padding:38px 30px 28px; box-shadow:var(--shadow-lg);
+    display:flex; flex-direction:column; align-items:center;
+    border:1px solid var(--line-soft);
+  }
+  .hero-art-card img{width:220px;}
+  .hero-art .float-badge{
+    position:absolute; bottom:-18px; left:-22px;
+    background:var(--navy); color:#fff; padding:12px 18px; border-radius:16px;
+    font-size:0.82rem; font-weight:700; box-shadow:var(--shadow);
+    display:flex; align-items:center; gap:8px;
+    animation:float 5s ease-in-out infinite;
+  }
+  .hero-art .float-badge svg{width:16px; height:16px; flex-shrink:0;}
+  @keyframes float{
+    0%,100%{ transform:translateY(0px); }
+    50%{ transform:translateY(-8px); }
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:110px 0; position:relative;}
+  .section-alt{background:var(--beige-deep);}
+  .section-head{max-width:640px; margin-bottom:60px;}
+  .section-head .eyebrow{margin-bottom:18px;}
+  .section-head h2{font-size:clamp(2rem, 3.2vw, 2.7rem); line-height:1.15; margin-bottom:18px;}
+  .section-head p{color:var(--ink-soft); font-size:1.08rem; line-height:1.7;}
+
+  /* ---------- about the book ---------- */
+  .book-feature{
+    display:grid; grid-template-columns:0.8fr 1.2fr; gap:60px; align-items:center;
+    background:#fff; border-radius:28px; padding:52px; box-shadow:var(--shadow);
+    border:1px solid var(--line-soft);
+  }
+  .book-feature-figure{display:flex; justify-content:center;}
+  .book-feature-figure img{width:220px;}
+  .story-quote{
+    font-family:'Fraunces', serif; font-style:normal; font-weight:700;
+    font-size:1.5rem; line-height:1.4; color:var(--navy); margin-bottom:18px;
+  }
+  .story-text{color:var(--ink-soft); font-size:1.05rem; line-height:1.75;}
+  .story-text strong{color:var(--navy);}
+
+  /* ---------- about us ---------- */
+  .team-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:26px;
+  }
+  .team-card{
+    background:#fff; border:1px solid var(--line-soft); border-radius:var(--radius);
+    padding:34px; box-shadow:var(--shadow);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .team-card:hover{transform:translateY(-6px); box-shadow:var(--shadow-lg);}
+  .team-card .role{ color:var(--sky-deep); font-weight:700; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;}
+  .team-card h3{font-size:1.4rem; margin-bottom:14px;}
+  .team-card p{color:var(--ink-soft); line-height:1.7; font-size:0.98rem;}
+
+  .contact-reveal{margin-top:18px; padding-top:18px; border-top:1px solid var(--line-soft);}
+  .contact-reveal summary{
+    cursor:pointer; font-weight:700; font-size:0.9rem; color:var(--sky-deep);
+    list-style:none; display:flex; align-items:center; gap:7px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .contact-reveal summary::-webkit-details-marker{display:none;}
+  .contact-reveal summary::after{
+    content:'›'; font-size:1.2rem; line-height:1; transform:rotate(90deg); transition:transform .25s ease;
+    margin-left:auto;
+  }
+  .contact-reveal[open] summary::after{transform:rotate(-90deg);}
+  .contact-reveal summary:hover{color:var(--navy);}
+  .contact-info{display:flex; flex-direction:column; gap:10px; margin-top:14px;}
+  .contact-info a{
+    display:flex; align-items:center; gap:9px; text-decoration:none;
+    color:var(--navy); font-weight:600; font-size:0.92rem;
+    transition:color .2s ease;
+  }
+  .contact-info a svg{width:16px; height:16px; flex-shrink:0; color:var(--sky-deep);}
+  .contact-info a:hover{color:var(--sky-deep);}
+
+  .company-contact{
+    text-align:center; margin-top:34px; color:var(--ink-soft); font-size:0.98rem;
+  }
+  .company-contact a{color:var(--sky-deep); font-weight:700; text-decoration:none; border-bottom:1.5px solid var(--sky);}
+  .company-contact a:hover{color:var(--navy); border-color:var(--navy);}
+  .avatar{
+    width:52px; height:52px; border-radius:16px; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:800; color:#fff; font-size:1.1rem;
+  }
+  .avatar.s{background:linear-gradient(135deg, var(--navy), var(--sky-deep));}
+  .avatar.n{background:linear-gradient(135deg, var(--sky-deep), var(--sky));}
+
+  .mission{
+    margin-top:28px; padding:40px 44px; border-radius:var(--radius);
+    background:linear-gradient(135deg, var(--navy), var(--navy-deep)); color:#fff;
+    display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center;
+    box-shadow:var(--shadow-lg);
+  }
+  .mission svg{flex-shrink:0; width:48px; height:48px;}
+  .mission p{font-size:1.08rem; line-height:1.65; color:rgba(255,255,255,0.9);}
+  .mission strong{color:#fff;}
+
+  /* ---------- buy section ---------- */
+  .buy-grid{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:48px; align-items:start;
+  }
+  .book-card{
+    background:#fff; border-radius:var(--radius);
+    padding:38px; border:1px solid var(--line-soft); box-shadow:var(--shadow);
+    position:sticky; top:110px;
+  }
+  .book-card img{ width:150px; margin:0 auto 24px; filter:drop-shadow(0 10px 16px rgba(18,40,68,0.12)); }
+  .book-card .title{ text-align:center; font-family:'Fraunces', serif; font-weight:800; color:var(--navy); font-size:1.5rem; margin-bottom:6px; }
+  .book-card .byline{ text-align:center; color:var(--ink-soft); font-size:0.92rem; margin-bottom:24px; }
+  .price-row{
+    display:flex; align-items:baseline; justify-content:center; gap:7px;
+    margin-bottom:24px; padding-bottom:24px; border-bottom:1px dashed var(--line);
+  }
+  .price-row .amount{ font-family:'Fraunces', serif; font-size:2.4rem; font-weight:800; color:var(--navy);}
+  .price-row .unit{ color:var(--ink-soft); font-size:0.95rem; }
+  .book-facts{list-style:none; padding:0; margin:0 0 28px; display:flex; flex-direction:column; gap:13px;}
+  .book-facts li{display:flex; gap:11px; font-size:0.94rem; color:var(--ink-soft); align-items:flex-start;}
+  .book-facts svg{flex-shrink:0; margin-top:2px; width:17px; height:17px; color:var(--sky-deep);}
+
+  .qty-price{
+    margin-top:26px; padding-top:24px; border-top:1px dashed var(--line);
+  }
+  .qty-price-title{
+    font-size:0.85rem; font-weight:800; color:var(--sky-deep); margin-bottom:14px;
+  }
+  .qty-tiers{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .qty-tiers li{
+    display:flex; justify-content:space-between; font-size:0.92rem;
+    color:var(--ink-soft); padding-bottom:9px; border-bottom:1px solid var(--line-soft);
+  }
+  .qty-tiers li:last-child{border-bottom:none; padding-bottom:0; color:var(--navy); font-weight:700;}
+  .qty-tiers li span:first-child{font-weight:700; color:var(--navy);}
+
+  .order-form{
+    background:#fff; border-radius:var(--radius); border:1px solid var(--line-soft);
+    padding:40px 44px; box-shadow:var(--shadow);
+  }
+  .order-form h3{font-family:'Fraunces', serif; font-weight:800; color:var(--navy); font-size:1.35rem; margin-bottom:8px;}
+  .order-form > p{color:var(--ink-soft); margin-bottom:30px; line-height:1.65;}
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .field{display:flex; flex-direction:column; gap:8px; margin-bottom:18px;}
+  .field.full{grid-column:1 / -1;}
+  label{font-size:0.85rem; font-weight:700; color:var(--navy);}
+  input, select{
+    font-family:'Inter', sans-serif; font-size:0.98rem;
+    padding:13px 15px; border-radius:10px; border:1.5px solid var(--line);
+    background:var(--beige); color:var(--ink);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  input:focus, select:focus{
+    outline:none; border-color:var(--sky); box-shadow:0 0 0 4px var(--sky-pale);
+  }
+  .btn:focus-visible, .btn-ghost:focus-visible, nav.primary-nav ul a:focus-visible{
+    outline:2px solid var(--sky-deep); outline-offset:2px;
+  }
+
+  .pay-options{display:flex; gap:12px;}
+  .pay-option{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    border:1.5px solid var(--line); border-radius:12px;
+    padding:15px 16px; cursor:pointer; font-weight:700; font-size:0.95rem; color:var(--navy);
+    background:var(--beige); transition:border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    text-align:center;
+  }
+  .pay-option input{position:absolute; opacity:0; width:0; height:0;}
+  .pay-option:has(input:checked){
+    border-color:var(--sky-deep); background:var(--sky-pale);
+    box-shadow:0 0 0 3px rgba(60,164,222,0.15);
+  }
+  .pay-option:hover{border-color:var(--sky);}
+  .pay-option:has(input:focus-visible){outline:2px solid var(--sky-deep); outline-offset:2px;}
+
+  .card-note{
+    margin-top:8px; padding:20px 22px; border-radius:12px;
+    background:#FDF6E8; border:1px solid #F0DFAE;
+    font-size:0.92rem; color:#7a5f22; line-height:1.6; display:none;
+  }
+  .card-note.show{display:block;}
+  .card-note b{color:var(--navy);}
+  .card-note a.pay-btn{
+    display:inline-flex; margin-top:14px; background:#635BFF; color:#fff; text-decoration:none;
+    padding:12px 22px; border-radius:100px; font-weight:700; font-size:0.94rem;
+  }
+  .swish-note{
+    margin-top:8px; padding:20px 22px; border-radius:12px;
+    background:var(--sky-pale); border:1px solid rgba(60,164,222,0.3);
+    font-size:0.92rem; color:var(--sky-deep); line-height:1.6; display:none;
+  }
+  .swish-note.show{display:block;}
+  .swish-note b{color:var(--navy);}
+  .form-submit{width:100%; justify-content:center; margin-top:8px;}
+  .form-submit[disabled]{opacity:0.6; cursor:not-allowed;}
+  .form-error{
+    display:none; margin-top:16px; padding:16px 18px; border-radius:12px;
+    background:#FBEAE8; border:1px solid #F0C6C1;
+    font-size:0.88rem; color:#8a3f38; line-height:1.55;
+  }
+  .form-error.show{display:block;}
+  .form-error a{color:#8a3f38; font-weight:700;}
+
+  /* ---------- footer ---------- */
+  footer{padding:64px 0 44px; background:var(--beige-deep); border-top:1px solid var(--line);}
+  .foot-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:28px;}
+  footer .foot-note{color:var(--ink-faint); font-size:0.88rem; max-width:34ch; line-height:1.65;}
+  .foot-links{display:flex; gap:30px; list-style:none; padding:0; margin:0;}
+  .foot-links a{color:var(--ink-soft); text-decoration:none; font-size:0.92rem; font-weight:600; transition:color .2s ease;}
+  .foot-links a:hover{color:var(--sky-deep);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .hero{padding:140px 0 72px;}
+    .hero .wrap{grid-template-columns:1fr; text-align:left;}
+    .hero-art{order:-1; margin-bottom:16px; justify-content:flex-start;}
+    .hero-art-card img{width:180px;}
+    .book-feature{grid-template-columns:1fr; text-align:left; padding:36px 28px;}
+    .team-grid{grid-template-columns:1fr;}
+    .mission{grid-template-columns:1fr;}
+    .buy-grid{grid-template-columns:1fr;}
+    .book-card{position:static;}
+    .form-grid{grid-template-columns:1fr;}
+    section{padding:76px 0;}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 20px;}
+    .nav{padding:18px 20px;}
+    header.scrolled .nav{padding:12px 20px;}
+    .order-form{padding:30px 22px;}
+    .book-feature{padding:30px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="nav">
+    <a href="#top" class="brand"><img src="assets/logo-mark.png" alt="Tidvatten UF" class="logo-mark">Tidvatten UF</a>
+    <nav class="primary-nav">
+      <ul>
+        <li><a href="#boken">Om boken</a></li>
+        <li><a href="#om-oss">Om oss</a></li>
+        <li><a href="#kop">Köp boken</a></li>
+      </ul>
+    </nav>
+    <a href="#kop" class="nav-cta">Köp boken</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Öppna meny"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-panel" id="mobilePanel">
+  <button class="mobile-panel-close" id="mobileClose" aria-label="Stäng meny">&times;</button>
+  <ul>
+    <li><a href="#boken">Om boken</a></li>
+    <li><a href="#om-oss">Om oss</a></li>
+    <li><a href="#kop">Köp boken</a></li>
+  </ul>
+  <a href="#kop" class="btn" style="justify-content:center;">Köp boken</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-blob one"></div>
+    <div class="hero-blob two"></div>
+    <div class="wrap">
+      <div>
+        <span class="eyebrow reveal">Tidvatten UF presenterar</span>
+        <h1 class="reveal reveal-1">Allt det osagda finns <em>Under Ytan</em>.</h1>
+        <p class="hero-book-title reveal reveal-2">Under Ytan</p>
+        <p class="hero-lede reveal reveal-2">En bilderbok om känslor som inte alltid syns utanpå. <strong>Under Ytan</strong> handlar om osynliga sjukdomar, stora känslor och att känna sig annorlunda, för barn som bär på något de inte alltid har ord för, och de vuxna som läser tillsammans med dem.</p>
+        <div class="hero-actions reveal reveal-3">
+          <a href="#kop" class="btn">Köp boken för 189 kr</a>
+          <a href="#boken" class="btn-ghost">Läs om boken ↓</a>
+        </div>
+      </div>
+      <div class="hero-art reveal reveal-2">
+        <div class="hero-art-card">
+          <img src="assets/lio-standing.png" alt="Lio, huvudkaraktären i boken: en rund, kritvit björnfigur med rosa kinder, tecknad i mjuka handritade linjer.">
+        </div>
+        <div class="float-badge">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v16M2 10h16"/></svg>
+          Nyutgiven bilderbok
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OM BOKEN -->
+  <section class="section-alt" id="boken">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Om boken</span>
+        <h2>Ett moln ingen annan kan se</h2>
+      </div>
+
+      <div class="book-feature reveal reveal-1">
+        <div class="book-feature-figure">
+          <img src="assets/lio-thundercloud.png" alt="Illustration av Lio som sitter hopkurad med ett stort, mörkt åskmoln ovanför huvudet." style="filter:drop-shadow(0 10px 14px rgba(18,40,68,0.12));">
+        </div>
+        <div>
+          <p class="story-quote">"Det finns saker som är lätta att se... Men vissa saker är osynliga."</p>
+          <p class="story-text">Lio bor på ön Tidvik och har en dag som alla andra, tills känslorna blir för stora för att rymmas. Då kommer åskmolnet. Det växer och växer, tills det är större än Lio själv.<br><br>
+          <strong>Under Ytan</strong> är en bilderbok om stora känslor och osynliga sjukdomar, och om att upptäcka att man kanske inte är så ensam som man tror.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OM OSS -->
+  <section id="om-oss">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Om oss</span>
+        <h2>Två elever, ett UF-företag och en idé som fastnade</h2>
+        <p>Tidvatten UF drivs av oss två under läsåret. Idén till Lio föddes ur samtal om hur sällan barnböcker pratar om känslor och sjukdomar som andra inte kan se, och hur mycket det hade betytt att läsa något sådant själva som barn.</p>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-card reveal reveal-1">
+          <div class="avatar s">SJ</div>
+          <div class="role">VD</div>
+          <h3>Simon Jonhed</h3>
+          <p>Ansvarar för affärsidé, produktion och att boken faktiskt hamnar i brevlådan hos den som beställt den.</p>
+          <details class="contact-reveal">
+            <summary>Visa kontaktuppgifter</summary>
+            <div class="contact-info">
+              <a href="tel:0793406248"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h3l2 5-2 1a9 9 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A14 14 0 0 1 4 6a2 2 0 0 1 2-2z"/></svg> 079-340 62 48</a>
+              <a href="mailto:simonjonhed@gmail.com"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 5l7 6 7-6"/></svg> simonjonhed@gmail.com</a>
+            </div>
+          </details>
+        </div>
+        <div class="team-card reveal reveal-2">
+          <div class="avatar n">NE</div>
+          <div class="role">Medgrundare</div>
+          <h3>Nathalie Eriksson</h3>
+          <p>Ansvarar för berättelsen om Lio, texten och kontakten med er som läsare. Hör gärna av er.</p>
+          <details class="contact-reveal">
+            <summary>Visa kontaktuppgifter</summary>
+            <div class="contact-info">
+              <a href="tel:0703852532"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h3l2 5-2 1a9 9 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A14 14 0 0 1 4 6a2 2 0 0 1 2-2z"/></svg> 070-385 25 32</a>
+              <a href="mailto:galaxennathalie@gmail.com"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M3 5l7 6 7-6"/></svg> galaxennathalie@gmail.com</a>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <p class="company-contact reveal">Vill du komma i kontakt med företaget? Mejla <a href="mailto:tidvattenuf.info@gmail.com">tidvattenuf.info@gmail.com</a></p>
+
+      <div class="mission reveal reveal-2">
+        <svg viewBox="0 0 46 46" fill="none" aria-hidden="true"><circle cx="23" cy="23" r="21" stroke="white" stroke-width="1.6" opacity="0.5"/><path d="M15 25c1-6 4-9 8-9s7 3 8 9" stroke="white" stroke-width="1.6" stroke-linecap="round" fill="none"/><circle cx="19" cy="19" r="1.6" fill="white"/><circle cx="27" cy="19" r="1.6" fill="white"/></svg>
+        <p><strong>Varför vi gör det här:</strong> Osynliga sjukdomar och stora känslor är svåra att sätta ord på, särskilt för barn. Med Lio vill vi ge barn, föräldrar och pedagoger ett sätt att prata om det som inte syns, utan att behöva förklara allt själva.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KÖP BOKEN -->
+  <section class="section-alt" id="kop">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Köp boken</span>
+        <h2>Ta hem Lio</h2>
+        <p>Fyll i formuläret så skickar vi bekräftelse och betalningsuppgifter till din e-post. Boken skickas när betalningen är mottagen.</p>
+      </div>
+
+      <div class="buy-grid">
+        <div class="book-card reveal reveal-1">
+          <img src="assets/lio-standing.png" alt="Bokens huvudkaraktär Lio">
+          <p class="title">Under Ytan</p>
+          <p class="byline">Text: Nathalie Eriksson · Tidvatten UF</p>
+          <div class="price-row">
+            <span class="amount">189</span>
+            <span class="unit">kr / exemplar</span>
+          </div>
+          <ul class="book-facts">
+            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="14" height="14" rx="2"/></svg> Inbunden bilderbok</li>
+            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3v14M3 10h14"/></svg> Skriven för barn, gärna tillsammans med en vuxen</li>
+            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10l4 4 8-8"/></svg> Betala med Swish eller kort</li>
+            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h14M6 3v3M14 3v3M4 6h12v11H4z"/></svg> Skickas inom Sverige</li>
+          </ul>
+
+          <div class="qty-price">
+            <p class="qty-price-title">Ju fler böcker, desto billigare per styck</p>
+            <ul class="qty-tiers">
+              <li><span>1 st</span><span>189 kr/st</span></li>
+              <li><span>2 st</span><span>180 kr/st</span></li>
+              <li><span>3 st</span><span>173 kr/st</span></li>
+              <li><span>4 st</span><span>167 kr/st</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <form class="order-form reveal reveal-2" id="orderForm">
+          <h3>Din beställning</h3>
+          <p>Vi hör av oss på mejlen med Swish-nummer och OCR/meddelande att ange vid betalning.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="fname">Förnamn</label>
+              <input id="fname" name="fname" type="text" required autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label for="lname">Efternamn</label>
+              <input id="lname" name="lname" type="text" required autocomplete="family-name">
+            </div>
+            <div class="field full">
+              <label for="email">E-post</label>
+              <input id="email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field full">
+              <label for="address">Adress</label>
+              <input id="address" name="address" type="text" required autocomplete="street-address">
+            </div>
+            <div class="field">
+              <label for="zip">Postnummer</label>
+              <input id="zip" name="zip" type="text" required autocomplete="postal-code">
+            </div>
+            <div class="field">
+              <label for="city">Ort</label>
+              <input id="city" name="city" type="text" required autocomplete="address-level2">
+            </div>
+            <div class="field full">
+              <label for="qty">Antal exemplar</label>
+              <select id="qty" name="qty">
+                <option value="1">1 exemplar: 189 kr (189 kr/st)</option>
+                <option value="2">2 exemplar: 360 kr (180 kr/st)</option>
+                <option value="3">3 exemplar: 519 kr (173 kr/st)</option>
+                <option value="4">4 exemplar: 668 kr (167 kr/st)</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Betalsätt</label>
+              <div class="pay-options">
+                <label class="pay-option">
+                  <input type="radio" name="paymethod" value="swish" checked>
+                  <span>Swish</span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="paymethod" value="card">
+                  <span>Kort</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn form-submit" id="submitBtn">Skicka beställning</button>
+
+          <div class="swish-note" id="swishNote"></div>
+          <div class="card-note" id="cardNote"></div>
+          <div class="form-error" id="formError"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <a href="#top" class="brand footer-brand"><img src="assets/logo.png" alt="Tidvatten UF" class="logo-full"></a>
+      <p class="foot-note">Ett UF-företag som ger ut bilderboken Lio, om känslor och sjukdomar man inte alltid kan se.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="#boken">Om boken</a></li>
+      <li><a href="#om-oss">Om oss</a></li>
+      <li><a href="#kop">Köp boken</a></li>
+      <li><a href="mailto:tidvattenuf.info@gmail.com">Kontakt</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  /* ---------- nav scroll state ---------- */
+  const header = document.getElementById('siteHeader');
+  function onScroll(){
+    if (window.scrollY > 24) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- mobile menu ---------- */
+  const navToggle = document.getElementById('navToggle');
+  const mobilePanel = document.getElementById('mobilePanel');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const mobileClose = document.getElementById('mobileClose');
+  function openMenu(){ mobilePanel.classList.add('open'); mobileOverlay.classList.add('open'); }
+  function closeMenu(){ mobilePanel.classList.remove('open'); mobileOverlay.classList.remove('open'); }
+  navToggle.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  mobileOverlay.addEventListener('click', closeMenu);
+  mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  /* ---------- scroll reveal ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => io.observe(el));
+  // Hero elements animate immediately on load
+  document.querySelectorAll('.hero .reveal').forEach(el => setTimeout(() => el.classList.add('in-view'), 60));
+</script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  /* =========================================================
+     EMAILJS-INSTÄLLNINGAR — fyll i era egna värden här.
+     ========================================================= */
+  const EMAILJS_PUBLIC_KEY      = "KX1R0STP3L0FGNCl8";
+  const EMAILJS_SERVICE_ID      = "service_p8eapmy";
+  const EMAILJS_TEMPLATE_OWNER  = "template_0svvp2p";     // mejl till er (tidvattenuf.info@gmail.com)
+  const EMAILJS_TEMPLATE_CUSTOMER = "template_98bke5h"; // bekräftelsemejl till kunden
+  const OWNER_EMAIL = "tidvattenuf.info@gmail.com";
+  const SWISH_NUMBER = "123 295 94 76";
+  const STRIPE_PUBLISHABLE_KEY = "pk_test_51UDMsa6i7OLik8LGCTSZ80OF55GHQBfOIhprQwyPdqv8Y4B8Ciub0eOJDdTsTD9g3BY9GUt4offQZWh30UJ2brcO00psv16wnj"; // TEST-nyckel från Sandlådan, byt till pk_live_... när ni går live
+  const STRIPE_BUY_BUTTON_ID   = "buy_btn_1UEOPA6i7OLik8LGNMbh9DRa";   // från Stripe → Payment links → Buy button
+  /* ========================================================= */
+
+  if (window.emailjs && EMAILJS_PUBLIC_KEY !== "DIN_PUBLIC_KEY") {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+
+  const form = document.getElementById('orderForm');
+  const note = document.getElementById('swishNote');
+  const cardNote = document.getElementById('cardNote');
+  const errorBox = document.getElementById('formError');
+  const submitBtn = document.getElementById('submitBtn');
+  const unitPrices = {1:189, 2:180, 3:173, 4:167};
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errorBox.classList.remove('show');
+    note.classList.remove('show');
+    cardNote.classList.remove('show');
+
+    const data = new FormData(form);
+    const qty = Number(data.get('qty'));
+    const unit = unitPrices[qty];
+    const total = unit * qty;
+    const fname = data.get('fname');
+    const lname = data.get('lname');
+    const name = `${fname} ${lname}`.trim();
+    const email = data.get('email');
+    const address = `${data.get('address')}, ${data.get('zip')} ${data.get('city')}`;
+    const ref = (fname||'').slice(0,3).toUpperCase() + Math.floor(1000 + Math.random()*9000);
+    const payMethod = data.get('paymethod'); // "swish" eller "card"
+    const payMethodLabels = { swish: 'Swish', card: 'Kort' };
+
+    const templateParams = {
+      order_ref: ref,
+      customer_name: name,
+      customer_email: email,
+      customer_address: address,
+      qty: qty,
+      unit_price: unit,
+      total_price: total,
+      swish_number: SWISH_NUMBER,
+      pay_method: payMethodLabels[payMethod] || 'Swish',
+      to_email: OWNER_EMAIL,
+      reply_to: email
+    };
+
+    if (!window.emailjs || EMAILJS_PUBLIC_KEY === "DIN_PUBLIC_KEY") {
+      errorBox.innerHTML = `E-postutskicket är inte konfigurerat ännu. Beställningen kunde inte skickas automatiskt. Kontakta oss gärna direkt på <a href="mailto:${OWNER_EMAIL}">${OWNER_EMAIL}</a> så hjälper vi till manuellt under tiden.`;
+      errorBox.classList.add('show');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Skickar...';
+
+    Promise.all([
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_OWNER, templateParams),
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CUSTOMER, templateParams)
+    ]).then(function(){
+      if (payMethod === 'card') {
+        const buyButtonReady = STRIPE_BUY_BUTTON_ID && !STRIPE_BUY_BUTTON_ID.includes('DIN_');
+        cardNote.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
+          Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas.`;
+        if (buyButtonReady) {
+          const widget = document.createElement('div');
+          widget.style.marginTop = '16px';
+          widget.innerHTML = `<stripe-buy-button buy-button-id="${STRIPE_BUY_BUTTON_ID}" publishable-key="${STRIPE_PUBLISHABLE_KEY}" client-reference-id="${ref}"></stripe-buy-button>`;
+          cardNote.appendChild(widget);
+        } else {
+          const missing = document.createElement('p');
+          missing.style.marginTop = '10px';
+          missing.style.fontSize = '0.85rem';
+          missing.textContent = '(Kortbetalningen är inte inkopplad ännu. Vi hör av oss med betalningsuppgifter via mejl.)';
+          cardNote.appendChild(missing);
+        }
+        cardNote.classList.add('show');
+        cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
+      } else {
+        note.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
+          Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande, så skickar vi boken så fort betalningen kommit in.`;
+        note.classList.add('show');
+        note.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }
+      form.reset();
+    }).catch(function(err){
+      console.error('EmailJS-fel:', err);
+      const detail = (err && (err.text || err.message)) ? `<br><span style="opacity:0.8">Feldetalj: ${err.status ? err.status + ' – ' : ''}${err.text || err.message}</span>` : '';
+      errorBox.innerHTML = `Något gick fel när bekräftelsen skulle skickas. Kontakta oss gärna direkt på <a href="mailto:${OWNER_EMAIL}">${OWNER_EMAIL}</a> så ordnar vi det manuellt.${detail}`;
+      errorBox.classList.add('show');
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Skicka beställning';
+    });
+  });
+</script>
+
+</body>
+</html>
