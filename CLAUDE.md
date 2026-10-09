@@ -2,7 +2,8 @@
 
 Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda statisk sida: `index.html` + bilder i `assets/`.
 
-- GitHub-repo: `tidvatten-uf-hemsida`, publiceras med GitHub Pages från `main` (roten).
+- GitHub-repo: https://github.com/Simmpro123/tidvatten-uf-hemsida (konto Simmpro123), publiceras med GitHub Pages från `main` (roten).
+- Publicerad sida: https://simmpro123.github.io/tidvatten-uf-hemsida/
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
 
 ## Arbetsflöde
