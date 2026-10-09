@@ -13,7 +13,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,50;1,9..144,400..700,50&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 <style>
   :root{
     /* Färger hämtade från logon (indigo + snäckblå) och Lios rosa kinder */
@@ -407,6 +406,8 @@
   .swish-note b, .card-note b{color:var(--tide-deep);}
   .spam-tip{display:flex; align-items:center; gap:10px; margin:14px 0; padding:12px 16px; border-radius:10px; background:#FFE97A; border:1px solid #E8C93A; color:#3D3200; font-size:0.98rem; font-weight:500; box-shadow:0 4px 12px -6px rgba(140,110,0,0.5);}
   .spam-tip strong{font-weight:700; color:#2A2200;}
+  .pay-btn{display:flex; width:100%; justify-content:center; margin-top:18px; background:#635BFF; box-shadow:0 10px 24px -10px rgba(99,91,255,0.7);}
+  .pay-btn:hover{background:#4F46E5;}
   .form-error{background:#FBEAE8; border:1px solid #F0C6C1; color:#8a3f38;}
   .form-error a{color:#8a3f38; font-weight:600;}
 
@@ -796,8 +797,13 @@
   const EMAILJS_TEMPLATE_CUSTOMER = "template_98bke5h"; // bekräftelsemejl till kunden
   const OWNER_EMAIL = "tidvattenuf.info@gmail.com";
   const SWISH_NUMBER = "123 295 94 76";
-  const STRIPE_PUBLISHABLE_KEY = "pk_test_51UDMsa6i7OLik8LGCTSZ80OF55GHQBfOIhprQwyPdqv8Y4B8Ciub0eOJDdTsTD9g3BY9GUt4offQZWh30UJ2brcO00psv16wnj"; // TEST-nyckel från Sandlådan, byt till pk_live_... när ni går live
-  const STRIPE_BUY_BUTTON_ID   = "buy_btn_1UEOPA6i7OLik8LGNMbh9DRa";   // från Stripe → Payment links → Buy button
+  // Stripe-betalningslänkar (LIVE) – en per antal böcker, frakt 49 kr ingår i varje
+  const STRIPE_LINKS = {
+    1: "https://buy.stripe.com/eVq9AM5g154uaFV6QZg7e00", // 208 kr
+    2: "https://buy.stripe.com/fZu7sEfUF0Oeg0ffnvg7e01", // 367 kr
+    3: "https://buy.stripe.com/fZudR2eQB54u7tJa3bg7e02", // 526 kr
+    4: "https://buy.stripe.com/28E4gs6k5dB0aFVb7fg7e03"  // 685 kr
+  };
   /* ========================================================= */
 
   if (window.emailjs && EMAILJS_PUBLIC_KEY !== "DIN_PUBLIC_KEY") {
@@ -844,7 +850,8 @@
     const name = `${fname} ${lname}`.trim();
     const email = data.get('email');
     const address = `${data.get('address')}, ${data.get('zip')} ${data.get('city')}`;
-    const ref = ((fname||'').replace(/[^A-Za-zÅÄÖåäöÉéÜü]/g, '').slice(0,3).toUpperCase() || 'TUF') + Math.floor(1000 + Math.random()*9000);
+    // Referensen får bara innehålla A–Z och siffror (krav från Stripe), så å/ä/ö görs om till a/a/o
+    const ref = ((fname||'').normalize('NFD').replace(/[^A-Za-z]/g, '').slice(0,3).toUpperCase() || 'TUF') + Math.floor(1000 + Math.random()*9000);
     const payMethod = data.get('paymethod'); // "swish" eller "card"
     const payMethodLabels = { swish: 'Swish', card: 'Kort' };
 
@@ -877,21 +884,10 @@
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_CUSTOMER, templateParams)
     ]).then(function(){
       if (payMethod === 'card') {
-        const buyButtonReady = STRIPE_BUY_BUTTON_ID && !STRIPE_BUY_BUTTON_ID.includes('DIN_');
+        const payUrl = `${STRIPE_LINKS[qty]}?client_reference_id=${encodeURIComponent(ref)}&prefilled_email=${encodeURIComponent(email)}`;
         cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${esc(email)}</b>.<span class="spam-tip"><span aria-hidden="true">⚠️</span> Ser du inte mejlet? <strong>Kolla skräpposten!</strong></span>
-          Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas. Boken skickas inom <b>1–2 dagar</b> efter betalning.`;
-        if (buyButtonReady) {
-          const widget = document.createElement('div');
-          widget.style.marginTop = '16px';
-          widget.innerHTML = `<stripe-buy-button buy-button-id="${STRIPE_BUY_BUTTON_ID}" publishable-key="${STRIPE_PUBLISHABLE_KEY}" client-reference-id="${ref}"></stripe-buy-button>`;
-          cardNote.appendChild(widget);
-        } else {
-          const missing = document.createElement('p');
-          missing.style.marginTop = '10px';
-          missing.style.fontSize = '0.85rem';
-          missing.textContent = '(Kortbetalningen är inte inkopplad ännu. Vi hör av oss med betalningsuppgifter via mejl.)';
-          cardNote.appendChild(missing);
-        }
+          Sista steget: betala <b>${total} kr</b> med kort via Stripe. Din referens är <b>${ref}</b>. Boken skickas inom <b>1–2 dagar</b> efter betalning.
+          <a class="btn pay-btn" href="${payUrl}" target="_blank" rel="noopener">Betala ${total} kr med kort <span class="arrow" aria-hidden="true">→</span></a>`;
         cardNote.classList.add('show');
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
       } else {

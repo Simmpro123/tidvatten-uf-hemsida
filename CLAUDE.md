@@ -8,6 +8,12 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 - Netlify CLI: kör med `$env:PATH = "C:\Program Files\nodejs;$env:APPDATA\npm;$env:PATH"` först. Inloggad på användarens konto.
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
 
+## Betalning
+- Swish: nummer i `SWISH_NUMBER`. Beställningsmejl via EmailJS (mallar i användarens EmailJS-konto).
+- Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UMXPU6QRMIxLUuSdEEMOgL9` (159 kr), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P`.
+- Ändras priset måste nya Stripe-länkar skapas (Stripe CLI: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Stripe.StripeCli_Microsoft.Winget.Source_8wekyb3d8bbwe\stripe.exe`, inloggad, använd `--live`) och `BOOK_PRICE`/`SHIPPING` uppdateras.
+- `client_reference_id` får bara vara A–Z/0–9, därför görs å/ä/ö om i referensen.
+
 ## Arbetsflöde
 Efter varje ändring av sidan:
 1. Commit med ett kort meddelande på svenska och `git push` till `origin main` (uppdaterar GitHub Pages automatiskt).
