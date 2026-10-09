@@ -337,17 +337,13 @@
   .book-facts li{display:flex; gap:12px; font-size:0.93rem; color:var(--ink-soft); align-items:flex-start;}
   .book-facts svg{flex-shrink:0; margin-top:3px; width:16px; height:16px; color:var(--shell);}
 
-  .qty-price{margin-top:26px; padding-top:22px; border-top:1px solid var(--line-soft);}
-  .qty-price-title{font-size:0.76rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:12px;}
-  .qty-tiers{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,1fr); gap:8px;}
-  .qty-tiers li{
-    text-align:center; padding:12px 4px; border-radius:var(--radius-sm);
-    background:var(--paper); border:1px solid transparent; font-size:0.8rem; color:var(--ink-soft);
-    transition:background .2s ease, border-color .2s ease;
+  .shipping-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-top:24px; padding-top:20px; border-top:1px solid var(--line-soft);
+    font-size:0.95rem; color:var(--ink-soft);
   }
-  .qty-tiers li b{display:block; font-family:'Fraunces', serif; font-size:1.15rem; font-weight:600; color:var(--ink);}
-  .qty-tiers li.active{background:var(--shell-pale); border-color:var(--shell-soft);}
-  .qty-tiers li.active b{color:var(--tide);}
+  .shipping-row b{font-family:'Fraunces', serif; font-size:1.2rem; font-weight:600; color:var(--ink);}
+  .shipping-note{font-size:0.84rem; color:var(--ink-faint); margin-top:4px;}
 
   .order-form{
     background:var(--card); border-radius:var(--radius); border:1px solid var(--line-soft);
@@ -393,6 +389,7 @@
     margin:8px 0 20px; padding:18px 0; border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft);
   }
   .order-total span{color:var(--ink-soft); font-size:0.95rem;}
+  .order-total div{text-align:right;}
   .order-total b{font-family:'Fraunces', serif; font-size:1.7rem; font-weight:600; color:var(--tide-deep); letter-spacing:-0.02em;}
   .order-total small{display:block; text-align:right; font-size:0.8rem; color:var(--ink-faint); font-weight:400;}
 
@@ -629,7 +626,7 @@
             <p class="byline">Text: Nathalie Eriksson · Tidvatten UF</p>
             <div class="price-row">
               <span class="amount">189 kr</span>
-              <span class="unit">/ exemplar</span>
+              <span class="unit">/ exemplar + frakt</span>
             </div>
             <ul class="book-facts">
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Inbunden bilderbok</li>
@@ -638,15 +635,11 @@
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skickas inom Sverige</li>
             </ul>
 
-            <div class="qty-price">
-              <p class="qty-price-title">Mängdrabatt</p>
-              <ul class="qty-tiers" id="qtyTiers">
-                <li data-qty="1" class="active"><b>189</b>1 st</li>
-                <li data-qty="2"><b>180</b>2 st</li>
-                <li data-qty="3"><b>173</b>3 st</li>
-                <li data-qty="4"><b>167</b>4 st</li>
-              </ul>
+            <div class="shipping-row">
+              <span>Frakt</span>
+              <b>49 kr</b>
             </div>
+            <p class="shipping-note">Samma frakt oavsett hur många böcker du beställer.</p>
           </div>
         </aside>
 
@@ -683,9 +676,9 @@
               <label for="qty">Antal exemplar</label>
               <select id="qty" name="qty">
                 <option value="1">1 exemplar – 189 kr</option>
-                <option value="2">2 exemplar – 360 kr (180 kr/st)</option>
-                <option value="3">3 exemplar – 519 kr (173 kr/st)</option>
-                <option value="4">4 exemplar – 668 kr (167 kr/st)</option>
+                <option value="2">2 exemplar – 378 kr</option>
+                <option value="3">3 exemplar – 567 kr</option>
+                <option value="4">4 exemplar – 756 kr</option>
               </select>
             </div>
             <div class="field full" role="radiogroup" aria-labelledby="payLabel">
@@ -707,7 +700,7 @@
 
           <div class="order-total" aria-live="polite">
             <span>Att betala</span>
-            <div><b id="orderTotal">189 kr</b><small id="orderTotalNote">1 exemplar</small></div>
+            <div><b id="orderTotal">238 kr</b><small id="orderTotalNote">1 exemplar 189 kr + frakt 49 kr</small></div>
           </div>
 
           <button type="submit" class="btn form-submit" id="submitBtn">Skicka beställning</button>
@@ -814,25 +807,19 @@
   const cardNote = document.getElementById('cardNote');
   const errorBox = document.getElementById('formError');
   const submitBtn = document.getElementById('submitBtn');
-  const unitPrices = {1:189, 2:180, 3:173, 4:167};
+  const BOOK_PRICE = 189;  // kr per exemplar
+  const SHIPPING = 49;     // kr per beställning, oavsett antal
 
-  /* ---------- live-summa + markerad mängdrabatt ---------- */
+  /* ---------- live-summa ---------- */
   const qtySelect = document.getElementById('qty');
   const totalEl = document.getElementById('orderTotal');
   const totalNoteEl = document.getElementById('orderTotalNote');
-  const tierEls = document.querySelectorAll('#qtyTiers li');
   function updateTotal(){
     const qty = Number(qtySelect.value);
-    const unit = unitPrices[qty];
-    totalEl.textContent = `${unit * qty} kr`;
-    totalNoteEl.textContent = qty === 1 ? '1 exemplar' : `${qty} exemplar à ${unit} kr`;
-    tierEls.forEach(li => li.classList.toggle('active', Number(li.dataset.qty) === qty));
+    totalEl.textContent = `${BOOK_PRICE * qty + SHIPPING} kr`;
+    totalNoteEl.textContent = `${qty} exemplar ${BOOK_PRICE * qty} kr + frakt ${SHIPPING} kr`;
   }
   qtySelect.addEventListener('change', updateTotal);
-  tierEls.forEach(li => {
-    li.style.cursor = 'pointer';
-    li.addEventListener('click', () => { qtySelect.value = li.dataset.qty; updateTotal(); });
-  });
   form.addEventListener('reset', () => setTimeout(updateTotal, 0));
   updateTotal();
 
@@ -844,8 +831,8 @@
 
     const data = new FormData(form);
     const qty = Number(data.get('qty'));
-    const unit = unitPrices[qty];
-    const total = unit * qty;
+    const unit = BOOK_PRICE;
+    const total = unit * qty + SHIPPING;
     const fname = data.get('fname');
     const lname = data.get('lname');
     const name = `${fname} ${lname}`.trim();
@@ -862,6 +849,7 @@
       customer_address: address,
       qty: qty,
       unit_price: unit,
+      shipping: SHIPPING,
       total_price: total,
       swish_number: SWISH_NUMBER,
       pay_method: payMethodLabels[payMethod] || 'Swish',
@@ -884,7 +872,7 @@
     ]).then(function(){
       if (payMethod === 'card') {
         const buyButtonReady = STRIPE_BUY_BUTTON_ID && !STRIPE_BUY_BUTTON_ID.includes('DIN_');
-        cardNote.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
+        cardNote.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
           Betala <b>${total} kr</b> nedan med kort. Ange gärna referensen <b>${ref}</b> om det efterfrågas.`;
         if (buyButtonReady) {
           const widget = document.createElement('div');
@@ -901,7 +889,7 @@
         cardNote.classList.add('show');
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
       } else {
-        note.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
+        note.innerHTML = `Tack, <b>${name}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. En bekräftelse är skickad till <b>${email}</b> (kolla gärna skräpposten om du inte ser den).<br>
           Swisha <b>${total} kr</b> till <b>${SWISH_NUMBER}</b> och skriv <b>${ref}</b> som meddelande, så skickar vi boken så fort betalningen kommit in.`;
         note.classList.add('show');
         note.scrollIntoView({behavior:'smooth', block:'nearest'});
