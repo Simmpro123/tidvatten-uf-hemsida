@@ -862,13 +862,21 @@
       pay_label: 'Betalsätt',
       pay_value: 'Kort via Stripe',
       ref_label: 'Ordernummer',
-      pay_note: `Boken skickas när kortbetalningen är genomförd. Hann du inte betala? Gör det här: ${payUrl}`
+      step1: `Betala ${total} kr med kort på Stripes betalsida som öppnades när du beställde.`,
+      step2: `Hann du inte betala? Gör det här: ${payUrl}`,
+      step3: `Ditt ordernummer är ${ref} – ange det om du kontaktar oss.`,
+      step4: 'När betalningen är genomförd skickar vi boken inom 1–2 dagar.',
+      pay_note: 'Boken skickas först när kortbetalningen är genomförd.'
     } : {
       pay_heading: 'Swisha för att slutföra ditt köp',
       pay_label: 'Swishnummer',
       pay_value: SWISH_NUMBER,
       ref_label: 'Meddelande i Swish (måste anges)',
-      pay_note: `Boken skickas först när vi har fått din betalning. Du måste skriva ${ref} i meddelandefältet i Swish – annars kan vi inte koppla betalningen till din beställning.`
+      step1: 'Öppna Swish-appen.',
+      step2: `Swisha ${total} kr till ${SWISH_NUMBER}.`,
+      step3: `Skriv ${ref} i meddelandefältet – det är obligatoriskt.`,
+      step4: 'När betalningen har kommit in skickar vi boken inom 1–2 dagar.',
+      pay_note: `Utan ${ref} i meddelandet kan vi inte koppla din betalning till beställningen, och då kan boken inte skickas.`
     };
 
     const templateParams = {
