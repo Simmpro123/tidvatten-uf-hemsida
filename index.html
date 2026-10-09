@@ -381,6 +381,7 @@
   .pay-option:has(input:checked) .dot{border:5.5px solid var(--tide);}
   .pay-option:hover{border-color:var(--shell-soft);}
   .pay-option:has(input:focus-visible){outline:2px solid var(--shell); outline-offset:2px;}
+  .pay-logo{margin-left:auto; height:36px; width:auto; display:block;}
   .pay-option small{margin-left:auto; font-weight:400; font-size:0.82rem; color:var(--ink-faint);}
 
   .order-total{
@@ -691,11 +692,13 @@
                   <input type="radio" name="paymethod" value="swish" checked>
                   <span class="dot" aria-hidden="true"></span>
                   <span>Swish</span>
+                  <img class="pay-logo" src="assets/pay-swish.png" alt="Swish" width="27" height="36">
                 </label>
                 <label class="pay-option">
                   <input type="radio" name="paymethod" value="card">
                   <span class="dot" aria-hidden="true"></span>
                   <span>Kort</span>
+                  <img class="pay-logo" src="assets/pay-mastercard.png" alt="Mastercard" width="64" height="36">
                 </label>
               </div>
             </div>
