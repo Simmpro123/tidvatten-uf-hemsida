@@ -8,6 +8,9 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 - Netlify CLI: kör med `$env:PATH = "C:\Program Files\nodejs;$env:APPDATA\npm;$env:PATH"` först. Inloggad på användarens konto.
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
 
+## 3D-boken (överst till höger)
+- Tillfälligt omslag byggt i HTML/CSS (`.cover`, `.back-cover`, `.spine-design`). När användaren har foton på den riktiga boken: lägg dem i `assets/` (t.ex. `book-front.jpg`, `book-back.jpg`, gärna även ryggen) och ersätt innehållet i `.face.front` / `.face.back` / `.face.spine` med `<img>`. Justera `--w`, `--h`, `--d` på `.book` efter bokens proportioner (även i media query för mobil).
+
 ## Betalning
 - Swish: nummer i `SWISH_NUMBER`. Beställningsmejl via EmailJS (mallar i användarens EmailJS-konto).
 - Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UMXPU6QRMIxLUuSdEEMOgL9` (159 kr), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P`.

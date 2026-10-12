@@ -174,26 +174,67 @@
   .hero-meta b{display:block; font-family:'Fraunces', serif; font-size:1.35rem; font-weight:600; color:var(--tide-deep); letter-spacing:-0.01em;}
 
   .hero-art{position:relative; display:flex; justify-content:center;}
-  .arch{
-    position:relative; width:min(400px, 100%); aspect-ratio:4/5;
-    border-radius:999px 999px 28px 28px; overflow:hidden;
-    background:linear-gradient(180deg, var(--paper-2) 0%, var(--paper-2) 68%, var(--shell-pale) 68%, #D7DEFF 100%);
-    box-shadow:var(--shadow-lg);
-    display:flex; align-items:flex-end; justify-content:center;
-  }
-  .arch img{
-    width:62%; margin-bottom:22%; position:relative; z-index:1;
-    mix-blend-mode:multiply; animation:bob 6s ease-in-out infinite;
-  }
   /* Gör bildernas papperston helt vit så att multiply låter bakgrunden lysa igenom */
   .knockout{filter:brightness(1.1) contrast(1.12);}
-  .arch .water{position:absolute; left:0; right:0; top:62%; height:40px; z-index:2; overflow:hidden; pointer-events:none;}
-  .arch .water svg{width:200%; height:100%; animation:drift 9s linear infinite;}
-  .arch .water-fill{position:absolute; left:0; right:0; top:calc(62% + 39px); bottom:0; background:linear-gradient(180deg, rgba(84,112,255,0.28), rgba(42,29,181,0.42)); z-index:2; pointer-events:none;}
-  .arch .bubbles span{position:absolute; z-index:3; border-radius:50%; border:1.5px solid rgba(255,255,255,0.7); animation:rise 7s ease-in infinite;}
-  .arch .bubbles span:nth-child(1){width:10px; height:10px; left:22%; bottom:6%;}
-  .arch .bubbles span:nth-child(2){width:6px; height:6px; left:70%; bottom:10%; animation-delay:2.4s;}
-  .arch .bubbles span:nth-child(3){width:8px; height:8px; left:48%; bottom:4%; animation-delay:4.6s;}
+
+  /* ---------- 3D-bok ----------
+     Byt omslag: lägg foton i assets/ och ersätt innehållet i .face.front / .face.back med
+     <img src="assets/book-front.jpg" alt="…"> (samma sak för baksidan). Ändra --w/--h/--d till bokens mått. */
+  .book-stage{
+    position:relative; width:min(420px, 100%); height:470px;
+    display:flex; align-items:center; justify-content:center;
+    perspective:1400px; cursor:grab; touch-action:pan-y; user-select:none; -webkit-user-select:none;
+    outline:none;
+  }
+  .book-stage:active{cursor:grabbing;}
+  .book-stage:focus-visible .book{outline:2px solid var(--shell); outline-offset:12px;}
+  .book{
+    --w:260px; --h:340px; --d:36px; --rx:6deg; --ry:-28deg;
+    position:relative; width:var(--w); height:var(--h);
+    transform-style:preserve-3d; transform:rotateX(var(--rx)) rotateY(var(--ry));
+  }
+  .book .face{position:absolute; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden;}
+  .book .front, .book .back{inset:0; border-radius:3px 8px 8px 3px;}
+  .book .front{transform:translateZ(calc(var(--d) / 2));}
+  .book .back{transform:rotateY(180deg) translateZ(calc(var(--d) / 2)); border-radius:8px 3px 3px 8px;}
+  .book .spine{width:var(--d); height:var(--h); left:calc(50% - var(--d) / 2); transform:rotateY(-90deg) translateZ(calc(var(--w) / 2));}
+  .book .pages{width:calc(var(--d) - 4px); height:calc(var(--h) - 8px); top:4px; left:calc(50% - (var(--d) - 4px) / 2); transform:rotateY(90deg) translateZ(calc(var(--w) / 2 - 4px));
+    background:repeating-linear-gradient(90deg, #FBF8F2 0 2px, #E9E2D4 2px 3px);}
+  .book .top, .book .bottom{width:calc(var(--w) - 6px); height:calc(var(--d) - 4px); left:2px; top:calc(50% - (var(--d) - 4px) / 2);
+    background:repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E9E2D4 2px 3px);}
+  .book .top{transform:rotateX(90deg) translateZ(calc(var(--h) / 2 - 4px));}
+  .book .bottom{transform:rotateX(-90deg) translateZ(calc(var(--h) / 2 - 4px));}
+  .book .face > img{width:100%; height:100%; object-fit:cover; display:block;}
+  .book-shadow{position:absolute; bottom:26px; left:50%; width:240px; height:30px; margin-left:-120px; border-radius:50%;
+    background:radial-gradient(closest-side, rgba(21,16,79,0.28), transparent); filter:blur(4px); pointer-events:none;}
+
+  /* Tillfälligt omslag (tills riktiga foton finns) */
+  .cover{position:relative; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center;
+    background:linear-gradient(180deg, #F5EFEA 0%, #F5EFEA 64%, #DCE2FF 64%, #8F9BF0 100%);
+    box-shadow:inset 6px 0 10px -6px rgba(0,0,0,0.35), inset -1px 0 0 rgba(0,0,0,0.08);}
+  .cover::before{content:''; position:absolute; left:0; top:0; bottom:0; width:10px; background:linear-gradient(90deg, rgba(0,0,0,0.18), transparent);}
+  .cover-brand{margin-top:22px; height:13px; width:auto; opacity:.85;}
+  .cover-title{margin-top:14px; font-family:'Fraunces', serif; font-size:2.6rem; line-height:0.95; font-weight:500; letter-spacing:-0.03em; color:var(--tide-deep);}
+  .cover-title em{display:block; font-style:italic; font-weight:400; color:var(--tide);}
+  .cover-lio{position:absolute; left:50%; bottom:58px; width:118px; margin-left:-59px; mix-blend-mode:multiply;}
+  .cover-water{position:absolute; left:0; right:0; top:calc(64% - 10px); height:20px;}
+  .cover-water svg{width:100%; height:100%; display:block;}
+  .cover-author{position:absolute; bottom:16px; left:0; right:0; font-size:0.72rem; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#fff;}
+  .back-cover{height:100%; padding:24px 22px 20px; display:flex; flex-direction:column; gap:10px; text-align:left;
+    background:linear-gradient(180deg, var(--tide-deep), var(--tide-deeper)); color:rgba(255,255,255,0.86);
+    box-shadow:inset -6px 0 10px -6px rgba(0,0,0,0.5);}
+  .back-cover q{font-family:'Fraunces', serif; font-style:italic; font-size:0.98rem; line-height:1.35; color:#fff; quotes:'”' '”';}
+  .back-cover p{font-size:0.74rem; line-height:1.55;}
+  .back-cover .back-art{align-self:center; width:72px; padding:6px; background:#F5EFEA; border-radius:3px; transform:rotate(-3deg);}
+  .back-cover .back-brand{margin-top:auto; height:12px; width:auto; align-self:flex-start; filter:brightness(0) invert(1); opacity:.8;}
+  .spine-design{height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:14px 0;
+    background:linear-gradient(90deg, #100C40, var(--tide-deep) 40%, #1C1663);}
+  .spine-design span{writing-mode:vertical-rl; font-family:'Fraunces', serif; font-size:0.95rem; letter-spacing:0.08em; color:#fff;}
+  .spine-design img{width:20px; filter:brightness(0) invert(1); opacity:.85;}
+
+  .book-hint{position:absolute; bottom:-6px; left:0; right:0; text-align:center; font-size:0.82rem; color:var(--ink-faint); pointer-events:none;}
+  .book-hint b{color:var(--ink-soft); font-weight:600;}
+  @media (max-width:960px){ .book-stage{height:420px;} .book{--w:220px; --h:288px; --d:30px;} .cover-title{font-size:2.2rem;} .cover-lio{width:96px; margin-left:-48px; bottom:48px;} }
   .sticker{
     position:absolute; z-index:4; top:12%; right:-6px;
     width:112px; height:112px; border-radius:50%;
@@ -204,9 +245,9 @@
   }
   .sticker small{font-family:'Inter', sans-serif; font-size:0.68rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;}
   .sticker b{font-size:1.9rem; font-weight:600;}
-  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}}
-  @keyframes drift{from{transform:translateX(0)} to{transform:translateX(-50%)}}
-  @keyframes rise{0%{transform:translateY(0); opacity:0} 15%{opacity:1} 100%{transform:translateY(-120px); opacity:0}}
+
+
+
 
   /* ---------- wave divider ---------- */
   .wave-divider{display:block; width:100%; height:90px; margin-top:60px; margin-bottom:-1px;}
@@ -450,7 +491,7 @@
     .hero{padding:128px 0 0;}
     .hero .wrap{grid-template-columns:1fr; gap:48px;}
     .hero-art{order:-1;}
-    .arch{width:min(300px, 80vw);}
+
     .sticker{width:92px; height:92px; right:calc(50% - 170px);}
     .sticker b{font-size:1.5rem;}
     .book-feature{grid-template-columns:1fr; gap:56px;}
@@ -528,13 +569,33 @@
       </div>
 
       <div class="hero-art reveal reveal-2">
-        <div class="arch">
-          <img class="knockout" src="assets/lio-standing.png" alt="Lio, huvudkaraktären i boken: en rund, kritvit björnfigur med rosa kinder, tecknad i mjuka handritade linjer.">
-          <div class="water" aria-hidden="true">
-            <svg viewBox="0 0 800 40" preserveAspectRatio="none"><path d="M0 20 Q50 6 100 20 T200 20 T300 20 T400 20 T500 20 T600 20 T700 20 T800 20 V40 H0Z" fill="rgba(84,112,255,0.28)"/><path d="M0 20 Q50 6 100 20 T200 20 T300 20 T400 20 T500 20 T600 20 T700 20 T800 20" fill="none" stroke="#5470FF" stroke-width="2"/></svg>
+        <!-- 3D-bok: dra för att snurra, klicka för att vända. Byt .front/.back mot foton när boken finns. -->
+        <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, klicka eller tryck Enter för att vända.">
+          <div class="book" id="book3d">
+            <div class="face front">
+              <div class="cover">
+                <img class="cover-brand" src="assets/wordmark.png" alt="">
+                <div class="cover-title">Under<em>Ytan</em></div>
+                <img class="cover-lio knockout" src="assets/lio-standing.png" alt="">
+                <div class="cover-water"><svg viewBox="0 0 260 20" preserveAspectRatio="none"><path d="M0 10 Q16 2 32 10 T65 10 T97 10 T130 10 T162 10 T195 10 T227 10 T260 10 V20 H0Z" fill="#DCE2FF"/><path d="M0 10 Q16 2 32 10 T65 10 T97 10 T130 10 T162 10 T195 10 T227 10 T260 10" fill="none" stroke="#5470FF" stroke-width="1.5"/></svg></div>
+                <div class="cover-author">Nathalie Eriksson</div>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="back-cover">
+                <q>Det finns saker som är lätta att se … Men vissa saker är osynliga.</q>
+                <img class="back-art" src="assets/lio-thundercloud.png" alt="">
+                <p>Lio bor på ön Tidvik och har en dag som alla andra – tills känslorna blir för stora för att rymmas. En bilderbok om stora känslor och osynliga sjukdomar.</p>
+                <img class="back-brand" src="assets/wordmark.png" alt="">
+              </div>
+            </div>
+            <div class="face spine"><div class="spine-design"><img src="assets/logo-mark.png" alt=""><span>Under Ytan</span><span style="font-size:0.6rem; letter-spacing:0.12em;">TIDVATTEN UF</span></div></div>
+            <div class="face pages"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
           </div>
-          <div class="water-fill" aria-hidden="true"></div>
-          <div class="bubbles" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="book-shadow" aria-hidden="true"></div>
+          <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att vända</p>
         </div>
         <div class="sticker" aria-hidden="true"><small>Ny bok</small><b>159 kr</b></div>
       </div>
@@ -795,6 +856,50 @@
   mobileOverlay.addEventListener('click', closeMenu);
   mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  /* ---------- 3D-bok: dra för att snurra, klicka för att vända ---------- */
+  (function(){
+    const stage = document.getElementById('bookStage'), book = document.getElementById('book3d');
+    if (!stage || !book) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const REST_X = 6, REST_Y = -28;
+    let rx = REST_X, ry = REST_Y, vy = 0, target = null, touched = false;
+    let dragging = false, lastX = 0, lastY = 0, moved = 0;
+    const t0 = performance.now();
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    function flip(){ target = ry + 180; vy = 0; touched = true; }
+    function loop(t){
+      if (!dragging) {
+        if (target !== null) { ry += (target - ry) * 0.12; if (Math.abs(target - ry) < 0.2) { ry = target; target = null; } }
+        else if (Math.abs(vy) > 0.05) { ry += vy; vy *= 0.92; }
+        else if (!touched && !reduce) { ry = REST_Y + Math.sin((t - t0) / 1400) * 14; }
+        rx += (REST_X - rx) * 0.04;
+      }
+      book.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+      book.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+      requestAnimationFrame(loop);
+    }
+    stage.addEventListener('pointerdown', e => {
+      dragging = true; touched = true; target = null; vy = 0; moved = 0; lastX = e.clientX; lastY = e.clientY;
+      try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    stage.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX, dy = e.clientY - lastY; lastX = e.clientX; lastY = e.clientY;
+      ry += dx * 0.6; rx = clamp(rx - dy * 0.3, -30, 30); vy = dx * 0.35; moved += Math.abs(dx) + Math.abs(dy);
+    });
+    const end = (isCancel) => { if (!dragging) return; dragging = false; if (!isCancel && moved < 6) flip(); };
+    stage.addEventListener('pointerup', () => end(false));
+    stage.addEventListener('pointercancel', () => end(true)); // t.ex. när mobilen scrollar sidan istället
+    stage.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowLeft')  { e.preventDefault(); touched = true; target = (target ?? ry) - 25; }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); touched = true; target = (target ?? ry) + 25; }
+    });
+    stage.addEventListener('dblclick', () => { target = REST_Y + Math.round((ry - REST_Y) / 360) * 360; });
+    window.__book = { flip, get ry(){ return ry; }, get rx(){ return rx; } }; // används av testerna
+    requestAnimationFrame(loop);
+  })();
 
   /* ---------- scroll reveal ---------- */
   const revealEls = document.querySelectorAll('.reveal');
