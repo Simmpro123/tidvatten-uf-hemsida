@@ -188,9 +188,10 @@
   }
   .book-stage:active{cursor:grabbing;}
   .book-stage:focus-visible .book{outline:2px solid var(--shell); outline-offset:12px;}
+  /* Allt i boken mäts i em, och 1em = bokens bredd / 16.25, så omslaget skalas skarpt i alla storlekar */
   .book{
-    --w:260px; --h:340px; --d:36px; --rx:6deg; --ry:-28deg;
-    position:relative; width:var(--w); height:var(--h);
+    --w:260px; --h:calc(var(--w) * 1.3077); --d:calc(var(--w) * 0.1385); --rx:6deg; --ry:-28deg;
+    position:relative; width:var(--w); height:var(--h); font-size:calc(var(--w) / 16.25);
     transform-style:preserve-3d; transform:rotateX(var(--rx)) rotateY(var(--ry));
   }
   .book .face{position:absolute; backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden;}
@@ -212,29 +213,55 @@
   .cover{position:relative; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center;
     background:linear-gradient(180deg, #F5EFEA 0%, #F5EFEA 64%, #DCE2FF 64%, #8F9BF0 100%);
     box-shadow:inset 6px 0 10px -6px rgba(0,0,0,0.35), inset -1px 0 0 rgba(0,0,0,0.08);}
-  .cover::before{content:''; position:absolute; left:0; top:0; bottom:0; width:10px; background:linear-gradient(90deg, rgba(0,0,0,0.18), transparent);}
-  .cover-brand{margin-top:22px; height:13px; width:auto; opacity:.85;}
-  .cover-title{margin-top:14px; font-family:'Fraunces', serif; font-size:2.6rem; line-height:0.95; font-weight:500; letter-spacing:-0.03em; color:var(--tide-deep);}
+  .cover::before{content:''; position:absolute; left:0; top:0; bottom:0; width:.625em; background:linear-gradient(90deg, rgba(0,0,0,0.18), transparent);}
+  .cover-brand{margin-top:1.375em; height:.8125em; width:auto; opacity:.85;}
+  .cover-title{margin-top:.875em; font-family:'Fraunces', serif; font-size:2.6em; line-height:0.95; font-weight:500; letter-spacing:-0.03em; color:var(--tide-deep);}
   .cover-title em{display:block; font-style:italic; font-weight:400; color:var(--tide);}
-  .cover-lio{position:absolute; left:50%; bottom:58px; width:118px; margin-left:-59px; mix-blend-mode:multiply;}
-  .cover-water{position:absolute; left:0; right:0; top:calc(64% - 10px); height:20px;}
+  .cover-lio{position:absolute; left:50%; bottom:3.4em; width:6.6em; margin-left:-3.3em; mix-blend-mode:multiply;}
+  .cover-water{position:absolute; left:0; right:0; top:calc(64% - .625em); height:1.25em;}
   .cover-water svg{width:100%; height:100%; display:block;}
-  .cover-author{position:absolute; bottom:16px; left:0; right:0; font-size:0.72rem; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#fff;}
-  .back-cover{height:100%; padding:24px 22px 20px; display:flex; flex-direction:column; gap:10px; text-align:left;
+  .cover-author{position:absolute; bottom:1em; left:0; right:0; font-size:.72em; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#fff;}
+  .back-cover{height:100%; padding:1.5em 1.375em 1.25em; display:flex; flex-direction:column; gap:.625em; text-align:left;
     background:linear-gradient(180deg, var(--tide-deep), var(--tide-deeper)); color:rgba(255,255,255,0.86);
     box-shadow:inset -6px 0 10px -6px rgba(0,0,0,0.5);}
-  .back-cover q{font-family:'Fraunces', serif; font-style:italic; font-size:0.98rem; line-height:1.35; color:#fff; quotes:'”' '”';}
-  .back-cover p{font-size:0.74rem; line-height:1.55;}
-  .back-cover .back-art{align-self:center; width:72px; padding:6px; background:#F5EFEA; border-radius:3px; transform:rotate(-3deg);}
-  .back-cover .back-brand{margin-top:auto; height:12px; width:auto; align-self:flex-start; filter:brightness(0) invert(1); opacity:.8;}
-  .spine-design{height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:14px 0;
+  .back-cover q{font-family:'Fraunces', serif; font-style:italic; font-size:.98em; line-height:1.35; color:#fff; quotes:'”' '”';}
+  .back-cover p{font-size:.74em; line-height:1.55;}
+  .back-cover .back-art{align-self:center; width:4.5em; padding:.375em; background:#F5EFEA; border-radius:3px; transform:rotate(-3deg);}
+  .back-cover .back-brand{margin-top:auto; height:.75em; width:auto; align-self:flex-start; filter:brightness(0) invert(1); opacity:.8;}
+  .spine-design{height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:.875em 0;
     background:linear-gradient(90deg, #100C40, var(--tide-deep) 40%, #1C1663);}
-  .spine-design span{writing-mode:vertical-rl; font-family:'Fraunces', serif; font-size:0.95rem; letter-spacing:0.08em; color:#fff;}
-  .spine-design img{width:20px; filter:brightness(0) invert(1); opacity:.85;}
+  .spine-design span{writing-mode:vertical-rl; font-family:'Fraunces', serif; font-size:.95em; letter-spacing:0.08em; color:#fff;}
+  .spine-design span.small{font-size:.6em; letter-spacing:0.12em;}
+  .spine-design img{width:1.25em; filter:brightness(0) invert(1); opacity:.85;}
 
   .book-hint{position:absolute; bottom:-6px; left:0; right:0; text-align:center; font-size:0.82rem; color:var(--ink-faint); pointer-events:none;}
   .book-hint b{color:var(--ink-soft); font-weight:600;}
-  @media (max-width:960px){ .book-stage{height:420px;} .book{--w:220px; --h:288px; --d:30px;} .cover-title{font-size:2.2rem;} .cover-lio{width:96px; margin-left:-48px; bottom:48px;} }
+  @media (max-width:960px){ .book-stage{height:420px;} .book{--w:220px;} }
+
+  /* ---------- Förstorad bok (öppnas när man trycker på boken) ---------- */
+  .book-modal{position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transition:opacity .35s ease, visibility 0s linear .35s;}
+  .book-modal.open{opacity:1; visibility:visible; transition:opacity .35s ease;}
+  .book-modal-backdrop{position:absolute; inset:0; background:rgba(13,10,54,0.28); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);}
+  /* Panelen täcker nästan hela sidan och tonas ut mot kanterna åt alla håll */
+  .book-modal-panel{position:absolute; inset:2vh 2vw; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 45%, #FBF7F0 0%, var(--paper) 55%, var(--paper-2) 100%);
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-composite:source-in; mask-image:linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+    mask-composite:intersect; transform:scale(.94); transition:transform .45s var(--ease);}
+  .book-modal.open .book-modal-panel{transform:none;}
+  .book-modal .book-stage{width:100%; height:100%;}
+  .book-modal .book{--w:min(calc(72vh * 0.765), 72vw, 620px); margin-top:8vh;}
+  .book-modal .book-shadow{width:min(44vh, 70vw); margin-left:calc(min(44vh, 70vw) / -2); bottom:2.5vh; height:4vh;}
+  .book-modal .book-hint{top:max(4vh, 24px); bottom:auto; font-size:0.9rem; padding:0 70px;}
+  .book-modal-close{position:absolute; top:max(4vh, 20px); right:max(4vw, 20px); z-index:2; width:52px; height:52px; border-radius:50%;
+    border:none; background:var(--tide-deep); color:#fff; font-size:1.8rem; line-height:1; cursor:pointer;
+    box-shadow:0 10px 24px -10px rgba(21,16,79,0.7); transition:transform .2s ease, background .2s ease;}
+  .book-modal-close:hover{background:var(--tide); transform:rotate(90deg);}
+  .book-modal-close:focus-visible{outline:2px solid var(--shell); outline-offset:3px;}
+  .book-placeholder{width:min(420px, 100%); height:470px;}
+  @media (max-width:960px){ .book-placeholder{height:420px;} }
+  body.modal-open{overflow:hidden;}
   .sticker{
     position:absolute; z-index:4; top:12%; right:-6px;
     width:112px; height:112px; border-radius:50%;
@@ -537,6 +564,13 @@
   </div>
 </header>
 
+<!-- Förstorad 3D-bok: boken flyttas hit när man trycker på den -->
+<div class="book-modal" id="bookModal" role="dialog" aria-modal="true" aria-label="Boken Under Ytan i 3D" aria-hidden="true">
+  <div class="book-modal-backdrop" data-close></div>
+  <div class="book-modal-panel" id="bookModalPanel"></div>
+  <button class="book-modal-close" id="bookModalClose" aria-label="Stäng">&times;</button>
+</div>
+
 <div class="mobile-overlay" id="mobileOverlay"></div>
 <div class="mobile-panel" id="mobilePanel" aria-label="Meny">
   <button class="mobile-panel-close" id="mobileClose" aria-label="Stäng meny">&times;</button>
@@ -570,7 +604,7 @@
 
       <div class="hero-art reveal reveal-2">
         <!-- 3D-bok: dra för att snurra, klicka för att vända. Byt .front/.back mot foton när boken finns. -->
-        <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, klicka eller tryck Enter för att vända.">
+        <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att förstora.">
           <div class="book" id="book3d">
             <div class="face front">
               <div class="cover">
@@ -589,13 +623,13 @@
                 <img class="back-brand" src="assets/wordmark.png" alt="">
               </div>
             </div>
-            <div class="face spine"><div class="spine-design"><img src="assets/logo-mark.png" alt=""><span>Under Ytan</span><span style="font-size:0.6rem; letter-spacing:0.12em;">TIDVATTEN UF</span></div></div>
+            <div class="face spine"><div class="spine-design"><img src="assets/logo-mark.png" alt=""><span>Under Ytan</span><span class="small">TIDVATTEN UF</span></div></div>
             <div class="face pages"></div>
             <div class="face top"></div>
             <div class="face bottom"></div>
           </div>
           <div class="book-shadow" aria-hidden="true"></div>
-          <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att vända</p>
+          <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att förstora</p>
         </div>
         <div class="sticker" aria-hidden="true"><small>Ny bok</small><b>159 kr</b></div>
       </div>
@@ -864,7 +898,7 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const REST_X = 6, REST_Y = -28;
     let rx = REST_X, ry = REST_Y, vy = 0, target = null, touched = false;
-    let dragging = false, lastX = 0, lastY = 0, moved = 0;
+    let dragging = false, lastX = 0, lastY = 0, moved = 0, downOnBook = false;
     const t0 = performance.now();
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     function flip(){ target = ry + 180; vy = 0; touched = true; }
@@ -880,7 +914,7 @@
       requestAnimationFrame(loop);
     }
     stage.addEventListener('pointerdown', e => {
-      dragging = true; touched = true; target = null; vy = 0; moved = 0; lastX = e.clientX; lastY = e.clientY;
+      dragging = true; touched = true; target = null; vy = 0; moved = 0; lastX = e.clientX; lastY = e.clientY; downOnBook = book.contains(e.target);
       try { stage.setPointerCapture(e.pointerId); } catch (_) {}
     });
     stage.addEventListener('pointermove', e => {
@@ -888,16 +922,43 @@
       const dx = e.clientX - lastX, dy = e.clientY - lastY; lastX = e.clientX; lastY = e.clientY;
       ry += dx * 0.6; rx = clamp(rx - dy * 0.3, -30, 30); vy = dx * 0.35; moved += Math.abs(dx) + Math.abs(dy);
     });
-    const end = (isCancel) => { if (!dragging) return; dragging = false; if (!isCancel && moved < 6) flip(); };
+    /* Förstoring: boken flyttas in i en ruta som täcker nästan hela sidan */
+    const modal = document.getElementById('bookModal'), panel = document.getElementById('bookModalPanel'), closeBtn = document.getElementById('bookModalClose');
+    const hint = stage.querySelector('.book-hint');
+    const placeholder = document.createElement('div'); placeholder.className = 'book-placeholder';
+    let zoomed = false, lastFocus = null;
+    function openZoom(){
+      if (zoomed) return; zoomed = true; lastFocus = document.activeElement;
+      stage.parentNode.insertBefore(placeholder, stage); panel.appendChild(stage);
+      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att vända · <b>Esc</b> för att stänga';
+      stage.setAttribute('aria-label', '3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att vända.');
+      modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open');
+      closeBtn.focus();
+    }
+    function closeZoom(){
+      if (!zoomed) return; zoomed = false;
+      modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open');
+      placeholder.parentNode.insertBefore(stage, placeholder); placeholder.remove();
+      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att förstora';
+      stage.setAttribute('aria-label', '3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att förstora.');
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    closeBtn.addEventListener('click', closeZoom);
+    modal.querySelector('[data-close]').addEventListener('click', closeZoom);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && zoomed) closeZoom(); });
+    // Tryck på boken: förstora (eller vänd om den redan är förstorad). Tryck bredvid boken i förstorat läge: stäng.
+    const tap = (onBook = true) => { if (!zoomed) openZoom(); else if (onBook) flip(); else closeZoom(); };
+
+    const end = (isCancel) => { if (!dragging) return; dragging = false; if (!isCancel && moved < 6) tap(downOnBook); };
     stage.addEventListener('pointerup', () => end(false));
     stage.addEventListener('pointercancel', () => end(true)); // t.ex. när mobilen scrollar sidan istället
     stage.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(); }
       else if (e.key === 'ArrowLeft')  { e.preventDefault(); touched = true; target = (target ?? ry) - 25; }
       else if (e.key === 'ArrowRight') { e.preventDefault(); touched = true; target = (target ?? ry) + 25; }
     });
     stage.addEventListener('dblclick', () => { target = REST_Y + Math.round((ry - REST_Y) / 360) * 360; });
-    window.__book = { flip, get ry(){ return ry; }, get rx(){ return rx; } }; // används av testerna
+    window.__book = { flip, openZoom, closeZoom, get zoomed(){ return zoomed; }, get ry(){ return ry; }, get rx(){ return rx; } }; // används av testerna
     requestAnimationFrame(loop);
   })();
 
