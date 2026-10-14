@@ -3,8 +3,8 @@
 Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda statisk sida: `index.html` + bilder i `assets/`.
 
 - GitHub-repo: https://github.com/Simmpro123/tidvatten-uf-hemsida (konto Simmpro123), publiceras med GitHub Pages från `main` (roten).
-- **Huvudsida (den som delas): https://tidvatten.netlify.app** – Netlify-sajt `tidvatten`, id `3caa8058-9d69-4f20-9bf8-15653a281116`.
-- Kopia på GitHub Pages: https://simmpro123.github.io/tidvatten-uf-hemsida/
+- **Huvudsida: https://tidvattenuf.se** (köpt hos STRATO 2026-10-14) = GitHub Pages med egen domän (filen `CNAME`). DNS hos STRATO: A-poster `@` → 185.199.108.153 / .109.153 / .110.153 / .111.153, CNAME `www` → `simmpro123.github.io`.
+- Gamla adressen https://tidvatten.netlify.app – Netlify-sajt `tidvatten`, id `3caa8058-9d69-4f20-9bf8-15653a281116`. Gratisplanen har 300 krediter/mån och varje produktionsdeploy kostar 15 (max ~20/mån) – i oktober 2026 tog de slut. Deploya inte dit vid varje ändring längre.
 - Netlify CLI: kör med `$env:PATH = "C:\Program Files\nodejs;$env:APPDATA\npm;$env:PATH"` först. Inloggad på användarens konto.
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
 
@@ -21,8 +21,8 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 
 ## Arbetsflöde
 Efter varje ändring av sidan:
-1. Commit med ett kort meddelande på svenska och `git push` till `origin main` (uppdaterar GitHub Pages automatiskt).
-2. Deploya till Netlify: kopiera **bara** `index.html` + `assets/` till en tom mapp i scratchpad (inte CLAUDE.md eller .git) och kör `netlify deploy --prod --dir <mappen> --site 3caa8058-9d69-4f20-9bf8-15653a281116 --message "<samma som commit>"`.
+1. Commit med ett kort meddelande på svenska och `git push` till `origin main`. Det publicerar sidan på tidvattenuf.se automatiskt (GitHub Pages, ca 1 min). Verifiera att live-`index.html` matchar lokalt.
+2. Netlify (gamla adressen) uppdateras inte längre vid varje ändring. Planen när krediterna fylls på i november: en sista deploy med `_redirects` (`/* https://tidvattenuf.se/:splat 301!`) så att gamla länkar skickas till nya domänen. Deploy-kommando: kopiera **bara** `index.html` + `assets/` (+ ev. `_redirects`) till en tom mapp och kör `netlify deploy --prod --dir <mappen> --site 3caa8058-9d69-4f20-9bf8-15653a281116`.
 
 Snäckan i loggan (`assets/logo-mark.png`) är hämtad från tidvatten.netlify.app – byt inte ut den.
 
