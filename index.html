@@ -178,8 +178,8 @@
   .knockout{filter:brightness(1.1) contrast(1.12);}
 
   /* ---------- 3D-bok ----------
-     Byt omslag: lägg foton i assets/ och ersätt innehållet i .face.front / .face.back med
-     <img src="assets/book-front.jpg" alt="…"> (samma sak för baksidan). Ändra --w/--h/--d till bokens mått. */
+     Omslagen är assets/book-front.jpg och book-back.jpg (urrätade foton, proportion 1 : 1.3077).
+     Boken är klammerhäftad, därför är ryggen (--d) tunn. */
   .book-stage{
     position:relative; width:min(420px, 100%); height:470px;
     display:flex; align-items:center; justify-content:center;
@@ -190,7 +190,7 @@
   .book-stage:focus-visible .book{outline:2px solid var(--shell); outline-offset:12px;}
   /* Allt i boken mäts i em, och 1em = bokens bredd / 16.25, så omslaget skalas skarpt i alla storlekar */
   .book{
-    --w:260px; --h:calc(var(--w) * 1.3077); --d:calc(var(--w) * 0.1385); --rx:6deg; --ry:-28deg;
+    --w:260px; --h:calc(var(--w) * 1.3077); --d:calc(var(--w) * 0.035); --rx:6deg; --ry:-28deg;
     position:relative; width:var(--w); height:var(--h); font-size:calc(var(--w) / 16.25);
     transform-style:preserve-3d; transform:rotateX(var(--rx)) rotateY(var(--ry));
   }
@@ -205,34 +205,19 @@
     background:repeating-linear-gradient(0deg, #FBF8F2 0 2px, #E9E2D4 2px 3px);}
   .book .top{transform:rotateX(90deg) translateZ(calc(var(--h) / 2 - 4px));}
   .book .bottom{transform:rotateX(-90deg) translateZ(calc(var(--h) / 2 - 4px));}
-  .book .face > img{width:100%; height:100%; object-fit:cover; display:block;}
+  .book .face > img{width:100%; height:100%; object-fit:cover; display:block; pointer-events:none;}
+  .book .front, .book .back{background:#9DB7CC;}
+  /* Lätt skugga vid falsen och ljus kant så att fotot ser ut som ett omslag */
+  .book .front::after, .book .back::after{content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.18);}
+  .book .front::after{background:linear-gradient(90deg, rgba(0,0,0,0.16), transparent 4%);}
+  .book .back::after{background:linear-gradient(270deg, rgba(0,0,0,0.16), transparent 4%);}
+  /* Rygg i omslagets färger: himmel upptill, hav nertill (vattenlinjen ligger vid ~54 %) */
+  .book .spine{background:linear-gradient(180deg, #A9C6DA 0%, #B7CFDE 52%, #5E86AE 55%, #3F6A98 100%);
+    box-shadow:inset 1px 0 0 rgba(255,255,255,0.25), inset -1px 0 0 rgba(0,0,0,0.12);}
   .book-shadow{position:absolute; bottom:26px; left:50%; width:240px; height:30px; margin-left:-120px; border-radius:50%;
     background:radial-gradient(closest-side, rgba(21,16,79,0.28), transparent); filter:blur(4px); pointer-events:none;}
 
-  /* Tillfälligt omslag (tills riktiga foton finns) */
-  .cover{position:relative; height:100%; display:flex; flex-direction:column; align-items:center; text-align:center;
-    background:linear-gradient(180deg, #F5EFEA 0%, #F5EFEA 64%, #DCE2FF 64%, #8F9BF0 100%);
-    box-shadow:inset 6px 0 10px -6px rgba(0,0,0,0.35), inset -1px 0 0 rgba(0,0,0,0.08);}
-  .cover::before{content:''; position:absolute; left:0; top:0; bottom:0; width:.625em; background:linear-gradient(90deg, rgba(0,0,0,0.18), transparent);}
-  .cover-brand{margin-top:1.375em; height:.8125em; width:auto; opacity:.85;}
-  .cover-title{margin-top:.875em; font-family:'Fraunces', serif; font-size:2.6em; line-height:0.95; font-weight:500; letter-spacing:-0.03em; color:var(--tide-deep);}
-  .cover-title em{display:block; font-style:italic; font-weight:400; color:var(--tide);}
-  .cover-lio{position:absolute; left:50%; bottom:3.4em; width:6.6em; margin-left:-3.3em; mix-blend-mode:multiply;}
-  .cover-water{position:absolute; left:0; right:0; top:calc(64% - .625em); height:1.25em;}
-  .cover-water svg{width:100%; height:100%; display:block;}
-  .cover-author{position:absolute; bottom:1em; left:0; right:0; font-size:.72em; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#fff;}
-  .back-cover{height:100%; padding:1.5em 1.375em 1.25em; display:flex; flex-direction:column; gap:.625em; text-align:left;
-    background:linear-gradient(180deg, var(--tide-deep), var(--tide-deeper)); color:rgba(255,255,255,0.86);
-    box-shadow:inset -6px 0 10px -6px rgba(0,0,0,0.5);}
-  .back-cover q{font-family:'Fraunces', serif; font-style:italic; font-size:.98em; line-height:1.35; color:#fff; quotes:'”' '”';}
-  .back-cover p{font-size:.74em; line-height:1.55;}
-  .back-cover .back-art{align-self:center; width:4.5em; padding:.375em; background:#F5EFEA; border-radius:3px; transform:rotate(-3deg);}
-  .back-cover .back-brand{margin-top:auto; height:.75em; width:auto; align-self:flex-start; filter:brightness(0) invert(1); opacity:.8;}
-  .spine-design{height:100%; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:.875em 0;
-    background:linear-gradient(90deg, #100C40, var(--tide-deep) 40%, #1C1663);}
-  .spine-design span{writing-mode:vertical-rl; font-family:'Fraunces', serif; font-size:.95em; letter-spacing:0.08em; color:#fff;}
-  .spine-design span.small{font-size:.6em; letter-spacing:0.12em;}
-  .spine-design img{width:1.25em; filter:brightness(0) invert(1); opacity:.85;}
 
   .book-hint{position:absolute; bottom:-6px; left:0; right:0; text-align:center; font-size:0.82rem; color:var(--ink-faint); pointer-events:none;}
   .book-hint b{color:var(--ink-soft); font-weight:600;}
@@ -397,8 +382,13 @@
     border:1px solid var(--line-soft); box-shadow:var(--shadow);
     position:sticky; top:100px;
   }
-  .book-card-art{background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); display:flex; justify-content:center; padding:36px 0 0; border-bottom:1px solid var(--line-soft);}
-  .book-card-art img{width:150px; mix-blend-mode:multiply;}
+  .book-card-art{background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); display:flex; justify-content:center; padding:32px 0; border-bottom:1px solid var(--line-soft);}
+  .book-card-art img{width:170px; height:auto; aspect-ratio:1 / 1.3077; border-radius:2px 5px 5px 2px; transform:rotate(-2deg);
+    box-shadow:0 1px 2px rgba(21,16,79,0.18), 0 14px 28px -10px rgba(21,16,79,0.38);}
+  .book-details{margin:22px 0 0; padding-top:18px; border-top:1px solid var(--line-soft); display:grid; gap:7px; font-size:0.88rem;}
+  .book-details div{display:grid; grid-template-columns:96px 1fr; gap:12px;}
+  .book-details dt{color:var(--ink-faint);}
+  .book-details dd{margin:0; color:var(--ink-soft);}
   .book-card-body{padding:30px 32px 32px;}
   .book-card .title{font-family:'Fraunces', serif; font-weight:500; color:var(--ink); font-size:1.7rem; letter-spacing:-0.02em;}
   .book-card .byline{color:var(--ink-soft); font-size:0.9rem; margin-top:2px;}
@@ -596,34 +586,19 @@
           <a href="#boken" class="btn-ghost">Läs om boken</a>
         </div>
         <div class="hero-meta reveal reveal-3">
-          <div><b>Inbunden</b>bilderbok</div>
+          <div><b>Klammerhäftad</b>bilderbok</div>
           <div><b>Swish & kort</b>betalning</div>
           <div><b>Hela Sverige</b>leverans</div>
         </div>
       </div>
 
       <div class="hero-art reveal reveal-2">
-        <!-- 3D-bok: dra för att snurra, klicka för att vända. Byt .front/.back mot foton när boken finns. -->
+        <!-- 3D-bok: dra för att snurra, tryck för att förstora. Omslagen är urrätade foton av den tryckta boken. -->
         <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att förstora.">
           <div class="book" id="book3d">
-            <div class="face front">
-              <div class="cover">
-                <img class="cover-brand" src="assets/wordmark.png" alt="">
-                <div class="cover-title">Under<em>Ytan</em></div>
-                <img class="cover-lio knockout" src="assets/lio-standing.png" alt="">
-                <div class="cover-water"><svg viewBox="0 0 260 20" preserveAspectRatio="none"><path d="M0 10 Q16 2 32 10 T65 10 T97 10 T130 10 T162 10 T195 10 T227 10 T260 10 V20 H0Z" fill="#DCE2FF"/><path d="M0 10 Q16 2 32 10 T65 10 T97 10 T130 10 T162 10 T195 10 T227 10 T260 10" fill="none" stroke="#5470FF" stroke-width="1.5"/></svg></div>
-                <div class="cover-author">Nathalie Eriksson</div>
-              </div>
-            </div>
-            <div class="face back">
-              <div class="back-cover">
-                <q>Det finns saker som är lätta att se … Men vissa saker är osynliga.</q>
-                <img class="back-art" src="assets/lio-thundercloud.png" alt="">
-                <p>Lio bor på ön Tidvik och har en dag som alla andra – tills känslorna blir för stora för att rymmas. En bilderbok om stora känslor och osynliga sjukdomar.</p>
-                <img class="back-brand" src="assets/wordmark.png" alt="">
-              </div>
-            </div>
-            <div class="face spine"><div class="spine-design"><img src="assets/logo-mark.png" alt=""><span>Under Ytan</span><span class="small">TIDVATTEN UF</span></div></div>
+            <div class="face front"><img src="assets/book-front.jpg" alt="" draggable="false"></div>
+            <div class="face back"><img src="assets/book-back.jpg" alt="" draggable="false"></div>
+            <div class="face spine"></div>
             <div class="face pages"></div>
             <div class="face top"></div>
             <div class="face bottom"></div>
@@ -740,20 +715,30 @@
 
       <div class="buy-grid">
         <aside class="book-card reveal reveal-1">
-          <div class="book-card-art"><img class="knockout" src="assets/lio-standing.png" alt="Bokens huvudkaraktär Lio"></div>
+          <div class="book-card-art"><img src="assets/book-front.jpg" alt="Framsidan av boken Under Ytan: Lio fiskar från en segelbåt på havet" width="170" height="222"></div>
           <div class="book-card-body">
             <p class="title">Under Ytan</p>
-            <p class="byline">Text: Nathalie Eriksson · Tidvatten UF</p>
+            <p class="byline">Nathalie Eriksson och Simon Jonhed</p>
             <div class="price-row">
               <span class="amount">159 kr</span>
               <span class="unit">/ exemplar + frakt</span>
             </div>
             <ul class="book-facts">
-              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Inbunden bilderbok</li>
+              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Bilderbok med en guide för samtal hemma</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skriven för barn, gärna tillsammans med en vuxen</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Betala med Swish eller kort</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skickas inom 1–2 dagar, i hela Sverige</li>
             </ul>
+
+            <dl class="book-details">
+              <div><dt>Författare</dt><dd>Nathalie Eriksson och Simon Jonhed</dd></div>
+              <div><dt>Illustratör</dt><dd>Nathalie Eriksson</dd></div>
+              <div><dt>Utgåva</dt><dd>Klammerhäftad, 2026</dd></div>
+              <div><dt>ISBN</dt><dd>978-91-535-1773-3</dd></div>
+              <div><dt>Språk</dt><dd>Svenska</dd></div>
+              <div><dt>Vikt</dt><dd>134 g</dd></div>
+              <div><dt>Förlag</dt><dd>Tidvatten UF</dd></div>
+            </dl>
 
             <div class="shipping-row">
               <span>Frakt</span>
