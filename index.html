@@ -342,6 +342,11 @@
     transform:rotate(45deg) translateY(-3px); transition:transform .25s ease;
   }
   .contact-reveal[open] summary::after{transform:rotate(-135deg) translateY(-2px);}
+  .bio-reveal + .contact-reveal{margin-top:18px;}
+  .bio{margin-top:16px; display:flex; flex-direction:column; gap:12px; color:var(--ink-soft); line-height:1.7;}
+  .bio-reveal[open] .bio{animation:bioIn .35s var(--ease);}
+  @keyframes bioIn{from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:none;}}
+  .bio .bio-end{font-family:'Fraunces', serif; font-style:italic; font-size:1.08rem; line-height:1.5; color:var(--ink);}
   .contact-info{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
   .contact-info a{
     display:flex; align-items:center; gap:10px; text-decoration:none;
@@ -649,7 +654,7 @@
       <div class="section-head reveal">
         <span class="eyebrow">Om oss</span>
         <h2>Två elever, ett UF-företag och en idé <em>som fastnade</em></h2>
-        <p>Tidvatten UF drivs av oss två under läsåret. Idén till Lio föddes ur samtal om hur sällan barnböcker pratar om känslor och sjukdomar som andra inte kan se, och hur mycket det hade betytt att läsa något sådant själva som barn.</p>
+        <p>Tidvatten UF drivs av oss två under läsåret. Idén till Lio bygger på Nathalies egna erfarenheter, och på hur sällan barnböcker pratar om känslor och sjukdomar som andra inte kan se.</p>
       </div>
 
       <div class="about-grid">
@@ -661,7 +666,15 @@
               <h3>Simon Jonhed</h3>
             </div>
           </div>
-          <p>Ansvarar för affärsidé, produktion och att boken faktiskt hamnar i brevlådan hos den som beställt den.</p>
+          <p>Har skrivit texten till Under Ytan tillsammans med Nathalie och ser till att företaget och siffrorna håller ihop.</p>
+          <details class="contact-reveal bio-reveal">
+            <summary>Läs mer om mig</summary>
+            <div class="bio">
+              <p>Jag har inga egna erfarenheter av det boken handlar om. Men när Nathalie berättade om idén och om Tidvatten blev jag nyfiken, och sedan dess har jag brunnit för det här lika mycket som hon.</p>
+              <p>Jag tror att man inte behöver ha varit med om något själv för att vilja förstå det och göra plats för det.</p>
+              <p>Det är därför jag är med. Jag ser till att företaget och siffrorna håller ihop, så att vår bok kan nå fram. 🌊</p>
+            </div>
+          </details>
           <details class="contact-reveal">
             <summary>Visa kontaktuppgifter</summary>
             <div class="contact-info">
@@ -678,7 +691,15 @@
               <h3>Nathalie Eriksson</h3>
             </div>
           </div>
-          <p>Ansvarar för berättelsen om Lio, texten och kontakten med er som läsare. Hör gärna av er.</p>
+          <p>Har skrivit Under Ytan tillsammans med Simon och målat varje bild i boken, med akvarell och penna.</p>
+          <details class="contact-reveal bio-reveal">
+            <summary>Läs mer om mig</summary>
+            <div class="bio">
+              <p>Det fanns en flicka som de flesta inte såg, för det som gjorde ont syntes aldrig utanpå. Den flickan var jag. Jag lärde mig tidigt att bära det tyst. Många sa att jag var jobbig, men ingen frågade hur det kändes.</p>
+              <p>Jag önskar att den här boken hade funnits då. Därför har jag gjort den. Under Ytan bygger på mina egna erfarenheter, och jag har målat varje sida själv, med akvarell och penna. Varje bild tog flera timmar, och det var värt varenda en.</p>
+              <p class="bio-end">Det här är vår bok till den lilla versionen av mig, och till alla som någon gång känt sig för mycket. 🌊</p>
+            </div>
+          </details>
           <details class="contact-reveal">
             <summary>Visa kontaktuppgifter</summary>
             <div class="contact-info">
