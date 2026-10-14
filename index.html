@@ -287,7 +287,7 @@
     background:#F5EFEA; border-radius:6px; padding:28px 28px 44px;
     box-shadow:0 40px 80px -20px rgba(0,0,0,0.55); transform:rotate(-3deg);
   }
-  .page-card img{width:250px;}
+  .page-card img{width:250px; height:auto; display:block; border-radius:2px;}
   .page-card::after{
     content:''; position:absolute; top:-14px; left:50%; width:96px; height:28px; margin-left:-48px;
     background:rgba(241,181,177,0.75); transform:rotate(4deg);
@@ -383,7 +383,7 @@
     position:sticky; top:100px;
   }
   .book-card-art{background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); display:flex; justify-content:center; padding:32px 0; border-bottom:1px solid var(--line-soft);}
-  .book-card-art img{width:170px; height:auto; aspect-ratio:1 / 1.3077; border-radius:2px 5px 5px 2px; transform:rotate(-2deg);
+  .book-card-art img{width:170px; height:auto; aspect-ratio:1 / 1.3077; border-radius:2px 5px 5px 2px;
     box-shadow:0 1px 2px rgba(21,16,79,0.18), 0 14px 28px -10px rgba(21,16,79,0.38);}
   .book-details{margin:22px 0 0; padding-top:18px; border-top:1px solid var(--line-soft); display:grid; gap:7px; font-size:0.88rem;}
   .book-details div{display:grid; grid-template-columns:96px 1fr; gap:12px;}
@@ -625,8 +625,8 @@
 
       <div class="book-feature">
         <figure class="page-card reveal reveal-1" style="margin:0;">
-          <img src="assets/lio-thundercloud.png" alt="Illustration av Lio som sitter hopkurad med ett stort, mörkt åskmoln ovanför huvudet.">
-          <figcaption>Ur Under Ytan</figcaption>
+          <img src="assets/book-back-500.jpg" srcset="assets/book-back-500.jpg 2x, assets/book-back-750.jpg 3x" width="250" height="327" alt="Baksidan av boken Under Ytan: en fyr på en ö vid havet och texten ”Lio känner allt lite extra. Ibland blir det för mycket, för högt och för svårt att välja, och ett åskmoln tar över. Ingen ser det. Men det finns där ändå. En bilderbok för barn som är lite annorlunda inuti, och för de vuxna som älskar dem. Med en guide för samtal hemma.”">
+          <figcaption>Baksidan av Under Ytan</figcaption>
         </figure>
         <div class="reveal reveal-2">
           <p class="story-quote">”Det finns saker som är lätta att se … Men vissa saker är osynliga.”</p>
@@ -715,7 +715,7 @@
 
       <div class="buy-grid">
         <aside class="book-card reveal reveal-1">
-          <div class="book-card-art"><img src="assets/book-front.jpg" alt="Framsidan av boken Under Ytan: Lio fiskar från en segelbåt på havet" width="170" height="222"></div>
+          <div class="book-card-art"><img src="assets/book-front-340.jpg" srcset="assets/book-front-340.jpg 2x, assets/book-front-510.jpg 3x" alt="Framsidan av boken Under Ytan: Lio fiskar från en segelbåt på havet" width="170" height="222"></div>
           <div class="book-card-body">
             <p class="title">Under Ytan</p>
             <p class="byline">Nathalie Eriksson och Simon Jonhed</p>
