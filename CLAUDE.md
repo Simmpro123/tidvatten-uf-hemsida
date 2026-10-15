@@ -15,7 +15,7 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 
 ## Betalning
 - Swish: nummer i `SWISH_NUMBER`. Beställningsmejl via EmailJS (mallar i användarens EmailJS-konto).
-- Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UQiqj6QRMIxLUuSD4jMdLGz` (179 kr, sedan 2026-10-15), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P` (49 kr). Länkarna tar 228/407/586/765 kr. De gamla 159 kr-länkarna (`plink_1UOaRl…`, `…RwD…`, `…S66…`, `…SGd…`, 208–685 kr) är fortfarande aktiva eftersom tidvatten.netlify.app använder dem – avaktivera dem när Netlify-adressen pekar om till tidvattenuf.se.
+- Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UQiqj6QRMIxLUuSD4jMdLGz` (179 kr, sedan 2026-10-15), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P` (49 kr). Länkarna tar 228/407/586/765 kr. 179 kr är produktens standardpris; det gamla 159 kr-priset är arkiverat och de gamla länkarna (208–685 kr) avaktiverade (2026-10-15, på användarens begäran – kortköp på gamla tidvatten.netlify.app fungerar därför inte längre).
 - Ändras priset måste nya Stripe-länkar skapas (Stripe CLI: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Stripe.StripeCli_Microsoft.Winget.Source_8wekyb3d8bbwe\stripe.exe`, inloggad, använd `--live`) och `BOOK_PRICE`/`SHIPPING` uppdateras.
 - `client_reference_id` får bara vara A–Z/0–9, därför görs å/ä/ö om i referensen.
 
