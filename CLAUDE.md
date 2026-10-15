@@ -15,7 +15,7 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 
 ## Betalning
 - Swish: nummer i `SWISH_NUMBER`. Beställningsmejl via EmailJS (mallar i användarens EmailJS-konto).
-- Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UMXPU6QRMIxLUuSdEEMOgL9` (159 kr), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P`.
+- Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UMXPU6QRMIxLUuSdEEMOgL9` (159 kr), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P`. **2026-10-15: priset på sidan höjt till 179 kr** (summor 228/407/586/765 kr) – användaren fixar Stripe själv; länkarna i `STRIPE_LINKS` tog fortfarande 208/367/526/685 kr då och måste bytas/uppdateras innan sidan med 179 kr går live.
 - Ändras priset måste nya Stripe-länkar skapas (Stripe CLI: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Stripe.StripeCli_Microsoft.Winget.Source_8wekyb3d8bbwe\stripe.exe`, inloggad, använd `--live`) och `BOOK_PRICE`/`SHIPPING` uppdateras.
 - `client_reference_id` får bara vara A–Z/0–9, därför görs å/ä/ö om i referensen.
 
