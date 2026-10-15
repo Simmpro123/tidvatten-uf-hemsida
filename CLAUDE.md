@@ -9,7 +9,7 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
 
 ## 3D-boken (överst till höger)
-- Omslagen är riktiga foton av den tryckta boken: `assets/book-front.jpg` och `assets/book-back.jpg` (1200×1569, perspektivkorrigerade från mobilfoton så att de är platta, proportion 1 : 1.3077 = samma som `--h`). Framsidan används även i köpkortet (`.book-card-art`).
+- Omslagen är riktiga foton av den tryckta boken: `assets/book-front.jpg` och `assets/book-back.jpg` (800×1046, perspektivkorrigerade från mobilfoton så att de är platta, proportion 1 : 1.3077 = samma som `--h`; nuvarande foton "Nya bilder (framsida/baksida).jpg" i Downloads\UF bilder, 2026-10-15). Förminskade versioner: `book-front-340/510.jpg` i köpkortet (`.book-card-art`) och `book-back-500/750.jpg` under Om boken (`.page-card`).
 - Boken är klammerhäftad, därför är ryggen tunn (`--d` = 3,5 % av bredden) och `.face.spine` är bara en färgtoning i omslagets blå.
 - Bokfakta i köpkortet (`.book-details`): författare, illustratör, utgåva, ISBN 978-91-535-1773-3, språk, vikt 134 g, förlag – i den ordning Nathalie skrev dem.
 
