@@ -450,6 +450,10 @@
   .pay-option:has(input:checked) .dot{border:5.5px solid var(--tide);}
   .pay-option:hover{border-color:var(--shell-soft);}
   .pay-option:has(input:focus-visible){outline:2px solid var(--shell); outline-offset:2px;}
+  .reviews-box{margin-top:22px; padding-top:20px; border-top:1px solid var(--line); text-align:center;}
+  .reviews-title{font-weight:600; color:var(--ink); font-size:0.95rem; margin-bottom:10px;}
+  .reviews-link{display:inline-block; margin-top:8px; font-size:0.88rem; font-weight:600; color:var(--tide-deep); text-decoration:none;}
+  .reviews-link:hover{text-decoration:underline;}
   .bulk-note{display:flex; gap:10px; align-items:flex-start; margin-top:4px; padding:12px 14px; border-radius:10px; background:var(--shell-pale); font-size:0.88rem; line-height:1.55; color:var(--ink-soft);}
   .bulk-note svg{flex-shrink:0; width:18px; height:18px; margin-top:1px; color:var(--tide);}
   .bulk-note b{color:var(--ink);}
@@ -767,6 +771,16 @@
               <b>49 kr</b>
             </div>
             <p class="shipping-note">Samma frakt oavsett hur många böcker du beställer.</p>
+
+            <div class="reviews-box">
+              <p class="reviews-title">Vad tycker våra kunder?</p>
+              <!-- TrustBox widget - Review Collector (gratisplanen: knapp för att lämna omdöme) -->
+              <div class="trustpilot-widget" data-locale="sv-SE" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6ad1dc7ac306c18a13303e62" data-style-height="52px" data-style-width="100%" data-token="8278bb29-43fd-4e08-aaea-13d17f104866">
+                <a href="https://se.trustpilot.com/review/tidvattenuf.se" target="_blank" rel="noopener">Trustpilot</a>
+              </div>
+              <!-- End TrustBox widget -->
+              <a class="reviews-link" href="https://se.trustpilot.com/review/tidvattenuf.se" target="_blank" rel="noopener">Läs omdömen på Trustpilot <span aria-hidden="true">→</span></a>
+            </div>
           </div>
         </aside>
 
@@ -984,6 +998,8 @@
   document.querySelectorAll('.hero .reveal').forEach(el => setTimeout(() => el.classList.add('in-view'), 60));
 </script>
 
+<!-- TrustBox script -->
+<script type="text/javascript" src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
