@@ -16,6 +16,8 @@ Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda stati
 ## Betalning
 - Swish: nummer i `SWISH_NUMBER`. Beställningsmejl via EmailJS (mallar i användarens EmailJS-konto).
 - Kort: Stripe **live**-konto `acct_1UDMsN6QRMIxLUuS` ("Tidvatten"). Fyra betalningslänkar i `STRIPE_LINKS` (1–4 böcker, frakt-produkt 49 kr ingår). Bokpris `price_1UQiqj6QRMIxLUuSD4jMdLGz` (179 kr, sedan 2026-10-15), fraktpris `price_1UOaRb6QRMIxLUuS5R8lnc3P` (49 kr). Länkarna tar 228/407/586/765 kr. 179 kr är produktens standardpris; det gamla 159 kr-priset är arkiverat och de gamla länkarna (208–685 kr) avaktiverade (2026-10-15, på användarens begäran – kortköp på gamla tidvatten.netlify.app fungerar därför inte längre).
+- Efter kortbetalning skickar alla fyra länkarna kunden till `https://tidvattenuf.se/tack.html` (after_completion redirect) – tack-sidan har en Trustpilot-knapp (`https://se.trustpilot.com/evaluate/tidvattenuf.se`). Nya länkar måste få samma redirect.
+- Mejlmallarna i `emails/` är kopior av mallarna i EmailJS – ändras en fil här måste den också klistras in i EmailJS (Edit Content → Code Editor → Apply Changes → Save). Kundmejlet har en Trustpilot-knapp.
 - Ändras priset måste nya Stripe-länkar skapas (Stripe CLI: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Stripe.StripeCli_Microsoft.Winget.Source_8wekyb3d8bbwe\stripe.exe`, inloggad, använd `--live`) och `BOOK_PRICE`/`SHIPPING` uppdateras.
 - `client_reference_id` får bara vara A–Z/0–9, därför görs å/ä/ö om i referensen.
 
