@@ -3,7 +3,7 @@
 Hemsidan för Tidvatten UF (UF-företag, Ekonomiprogrammet åk 3). En enda statisk sida: `index.html` + bilder i `assets/`.
 
 - GitHub-repo: https://github.com/Simmpro123/tidvatten-uf-hemsida (konto Simmpro123), publiceras med GitHub Pages från `main` (roten).
-- **Huvudsida: https://tidvattenuf.se** (köpt hos STRATO 2026-10-14) = GitHub Pages med egen domän (filen `CNAME`). DNS hos STRATO: A-poster `@` → 185.199.108.153 / .109.153 / .110.153 / .111.153, CNAME `www` → `simmpro123.github.io`.
+- **Huvudsida: https://tidvattenuf.se** (köpt hos STRATO 2026-10-14) = GitHub Pages med egen domän (filen `CNAME`). Sedan 2026-10-16 sköts DNS av **Cloudflare** (gratisplan, användarens konto; namnservrar `dakota.ns.cloudflare.com` + `dara.ns.cloudflare.com` inlagda hos STRATO). I Cloudflare: A `@` → 185.199.108.153 och CNAME `www` → tidvattenuf.se, båda **Proxied** (orange moln); SSL/TLS-läge **Full**, Always Use HTTPS på. Hänglåset kommer från Cloudflare, eftersom GitHubs eget certifikat fastnade – slå därför **inte** på "Enforce HTTPS" i GitHub Pages. Trustpilot-verifieringen ligger som meta-tagg i `<head>`.
 - Gamla adressen https://tidvatten.netlify.app – Netlify-sajt `tidvatten`, id `3caa8058-9d69-4f20-9bf8-15653a281116`. Gratisplanen har 300 krediter/mån och varje produktionsdeploy kostar 15 (max ~20/mån) – i oktober 2026 tog de slut. Deploya inte dit vid varje ändring längre.
 - Netlify CLI: kör med `$env:PATH = "C:\Program Files\nodejs;$env:APPDATA\npm;$env:PATH"` först. Inloggad på användarens konto.
 - Git: `C:\Program Files\Git\cmd\git.exe` · GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (finns inte i PATH).
