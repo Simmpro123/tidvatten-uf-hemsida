@@ -458,6 +458,8 @@
   .bulk-note svg{flex-shrink:0; width:18px; height:18px; margin-top:1px; color:var(--tide);}
   .bulk-note b{color:var(--ink);}
   .bulk-note a{color:var(--tide); font-weight:600;}
+  .pay-badge{position:absolute; top:-10px; left:14px; background:var(--tide); color:#fff; font-size:0.7rem; font-weight:600; letter-spacing:0.02em; line-height:1; padding:4px 9px; border-radius:100px;}
+  .pay-recommend{margin-top:10px; font-size:0.85rem; line-height:1.5; color:var(--ink-soft);}
   .pay-logo{margin-left:auto; height:36px; width:auto; display:block;}
   .pay-option small{margin-left:auto; font-weight:400; font-size:0.82rem; color:var(--ink-faint);}
 
@@ -604,7 +606,7 @@
 
       <div class="hero-art reveal reveal-2">
         <!-- 3D-bok: dra för att snurra, tryck för att förstora. Omslagen är urrätade foton av den tryckta boken. -->
-        <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att förstora.">
+        <div class="book-stage" id="bookStage" tabindex="0" role="img" aria-label="3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att zooma in.">
           <div class="book" id="book3d">
             <div class="face front"><img src="assets/book-front.jpg" alt="" draggable="false"></div>
             <div class="face back"><img src="assets/book-back.jpg" alt="" draggable="false"></div>
@@ -614,7 +616,7 @@
             <div class="face bottom"></div>
           </div>
           <div class="book-shadow" aria-hidden="true"></div>
-          <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att förstora</p>
+          <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att zooma in</p>
         </div>
         <div class="sticker" aria-hidden="true"><small>Ny bok</small><b>179 kr</b></div>
       </div>
@@ -730,13 +732,13 @@
       <div class="section-head reveal">
         <span class="eyebrow">Köp boken</span>
         <h2>Ta hem <em>Lio</em></h2>
-        <p>Fyll i formuläret och betala direkt med Swish eller kort. Boken skickas inom 1–2 dagar efter att betalningen är mottagen.</p>
+        <p>Fyll i formuläret och betala direkt med Swish eller kort. Boken skickas inom 1–2 dagar efter att betalningen är mottagen, och leveranstiden är 2–4 dagar.</p>
       </div>
 
       <ol class="steps reveal reveal-1">
         <li><div><b>Beställ</b>Fyll i formuläret nedan.</div></li>
         <li><div><b>Betala</b>Swish-appen öppnas direkt med allt ifyllt – eller betala med kort.</div></li>
-        <li><div><b>Läs tillsammans</b>Boken skickas inom 1–2 dagar efter betalning.</div></li>
+        <li><div><b>Läs tillsammans</b>Boken skickas inom 1–2 dagar efter betalning och är hos dig inom 2–4 dagar.</div></li>
       </ol>
 
       <div class="buy-grid">
@@ -753,7 +755,7 @@
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Bilderbok med en guide för samtal hemma</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skriven för barn, gärna tillsammans med en vuxen</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Betala med Swish eller kort</li>
-              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skickas inom 1–2 dagar, i hela Sverige</li>
+              <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Leveranstid 2–4 dagar, i hela Sverige</li>
             </ul>
 
             <dl class="book-details">
@@ -770,7 +772,7 @@
               <span>Frakt</span>
               <b>49 kr</b>
             </div>
-            <p class="shipping-note">Samma frakt oavsett hur många böcker du beställer.</p>
+            <p class="shipping-note">Leveranstid 2–4 dagar. Samma frakt oavsett hur många böcker du beställer.</p>
 
             <div class="reviews-box">
               <p class="reviews-title">Vad tycker våra kunder?</p>
@@ -829,6 +831,7 @@
                 <label class="pay-option">
                   <input type="radio" name="paymethod" value="swish" checked>
                   <span class="dot" aria-hidden="true"></span>
+                  <span class="pay-badge">Rekommenderas</span>
                   <span>Swish</span>
                   <img class="pay-logo" src="assets/pay-swish.png" alt="Swish" width="27" height="36">
                 </label>
@@ -839,6 +842,7 @@
                   <img class="pay-logo" src="assets/pay-mastercard.png" alt="Mastercard" width="64" height="36">
                 </label>
               </div>
+              <p class="pay-recommend">Vi rekommenderar Swish – betalningen bekräftas direkt, så att vi kan skicka din bok så snabbt som möjligt.</p>
             </div>
           </div>
 
@@ -951,7 +955,8 @@
     function openZoom(){
       if (zoomed) return; zoomed = true; lastFocus = document.activeElement;
       stage.parentNode.insertBefore(placeholder, stage); panel.appendChild(stage);
-      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att vända · <b>Esc</b> för att stänga';
+      // Esc finns bara på datorer med tangentbord
+      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att vända · <b>tryck utanför</b>' + (matchMedia('(hover: none)').matches ? '' : ' eller <b>Esc</b>') + ' för att zooma ut';
       stage.setAttribute('aria-label', '3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att vända.');
       modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); document.body.classList.add('modal-open');
       closeBtn.focus();
@@ -960,8 +965,8 @@
       if (!zoomed) return; zoomed = false;
       modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); document.body.classList.remove('modal-open');
       placeholder.parentNode.insertBefore(stage, placeholder); placeholder.remove();
-      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att förstora';
-      stage.setAttribute('aria-label', '3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att förstora.');
+      hint.innerHTML = '↻ <b>Dra</b> för att snurra · <b>tryck</b> för att zooma in';
+      stage.setAttribute('aria-label', '3D-bild av boken Under Ytan. Dra för att snurra, tryck eller Enter för att zooma in.');
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
     closeBtn.addEventListener('click', closeZoom);
@@ -1132,7 +1137,7 @@
         : `<span class="spam-tip"><span aria-hidden="true">⚠️</span> Vi kunde inte skicka en bekräftelse till <strong>${esc(email)}</strong> – stämmer adressen? Din beställning är ändå mottagen. Spara din referens: <strong>${ref}</strong></span>`;
       if (payMethod === 'card') {
         cardNote.innerHTML = `Tack, <b>${esc(name)}</b>! Din beställning på <b>${qty} st</b> (${total} kr inkl. frakt) är mottagen. ${confirmText}
-          Sista steget: betala <b>${total} kr</b> med kort via Stripe. Din referens är <b>${ref}</b>. Boken skickas inom <b>1–2 dagar</b> efter betalning.
+          Sista steget: betala <b>${total} kr</b> med kort via Stripe. Din referens är <b>${ref}</b>. Boken skickas inom <b>1–2 dagar</b> efter betalning (leveranstid 2–4 dagar).
           <a class="btn pay-btn" href="${payUrl}" target="_blank" rel="noopener">Betala ${total} kr med kort <span class="arrow" aria-hidden="true">→</span></a>`;
         cardNote.classList.add('show');
         cardNote.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -1151,7 +1156,7 @@
             ${payPart}
             <p class="swish-pay-small">Belopp och referens fylls i automatiskt – du behöver bara godkänna betalningen i Swish.</p>
           </div>
-          Boken skickas inom <b>1–2 dagar</b> efter att betalningen kommit in.`;
+          Boken skickas inom <b>1–2 dagar</b> efter att betalningen kommit in (leveranstid 2–4 dagar).`;
         note.classList.add('show');
         note.scrollIntoView({behavior:'smooth', block:'nearest'});
         // På mobilen öppnas Swish direkt
