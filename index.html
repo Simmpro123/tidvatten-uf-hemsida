@@ -421,6 +421,12 @@
   .price-row{display:flex; align-items:baseline; gap:8px; margin:22px 0;}
   .price-row .amount{font-family:'Fraunces', serif; font-size:2.6rem; font-weight:600; color:var(--tide-deep); letter-spacing:-0.03em; line-height:1;}
   .price-row .unit{color:var(--ink-soft); font-size:0.92rem;}
+  /* Julrea – visas av skriptet beroende på datum */
+  .price-row .was{color:var(--ink-faint); font-size:1.15rem; text-decoration:line-through; text-decoration-thickness:1.5px;}
+  .sale-note{margin:-8px 0 20px; font-size:0.9rem; line-height:1.5; color:var(--ink-soft);}
+  .sale-note b{color:var(--tide-deep);}
+  .sale-badge{display:inline-block; margin-right:6px; padding:3px 10px; border-radius:100px; background:var(--blush); color:var(--tide-deep); font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; vertical-align:1px;}
+  .sticker s{font-family:'Inter', sans-serif; font-size:0.74rem; opacity:.65; margin-top:2px;}
   .book-facts{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px;}
   .book-facts li{display:flex; gap:12px; font-size:0.93rem; color:var(--ink-soft); align-items:flex-start;}
   .book-facts svg{flex-shrink:0; margin-top:3px; width:16px; height:16px; color:var(--shell);}
@@ -573,8 +579,9 @@
 <body class="has-promo">
 
 <header id="siteHeader">
-  <a href="#kop" class="promo-bar" id="promoBar" data-until="2026-12-15">
-    <span class="promo-star" aria-hidden="true">★</span><span class="promo-long"><b>Den perfekta julklappen.</b> Beställ senast 15 december för leverans före jul.</span><span class="promo-short"><b>Julklapp?</b> Beställ senast 15/12 för leverans före jul.</span><span class="promo-cta">Beställ här</span>
+  <!-- Texten byts av skriptet (JULREA) beroende på datum; bannern tas bort efter julrean -->
+  <a href="#kop" class="promo-bar" id="promoBar">
+    <span class="promo-star" aria-hidden="true">★</span><span class="promo-long" id="promoLong"><b>Den perfekta julklappen.</b> Beställ senast 15 december för leverans före jul.</span><span class="promo-short" id="promoShort"><b>Julklapp?</b> Beställ senast 15/12 för leverans före jul.</span><span class="promo-cta" id="promoCta">Beställ här</span>
   </a>
   <div class="nav">
     <a href="#top" class="brand"><img src="assets/logo-mark.png" alt="" class="logo-mark"><img src="assets/wordmark.png" alt="Tidvatten UF" class="wordmark" width="141" height="20"></a>
@@ -605,7 +612,7 @@
     <li><a href="#om-oss">Om oss</a></li>
     <li><a href="#kop">Beställ</a></li>
   </ul>
-  <a href="#kop" class="btn" style="justify-content:center;">Köp boken – 179 kr</a>
+  <a href="#kop" class="btn" style="justify-content:center;">Köp boken – <span class="js-price">179</span> kr</a>
 </div>
 
 <main id="top">
@@ -618,7 +625,7 @@
         <h1 class="reveal reveal-1">Allt det osagda finns <em>under ytan</em>.</h1>
         <p class="hero-lede reveal reveal-2">En bilderbok om känslor som inte alltid syns utanpå. <strong>Under Ytan</strong> handlar om osynliga svårigheter, stora känslor och att känna sig annorlunda – för barn som bär på något de inte alltid har ord för, och de vuxna som läser tillsammans med dem.</p>
         <div class="hero-actions reveal reveal-3">
-          <a href="#kop" class="btn">Köp boken för 179 kr <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="#kop" class="btn">Köp boken för <span class="js-price">179</span> kr <span class="arrow" aria-hidden="true">→</span></a>
           <a href="#boken" class="btn-ghost">Läs om boken</a>
         </div>
         <div class="hero-meta reveal reveal-3">
@@ -642,7 +649,7 @@
           <div class="book-shadow" aria-hidden="true"></div>
           <p class="book-hint" aria-hidden="true">↻ <b>Dra</b> för att snurra · <b>tryck</b> för att zooma in</p>
         </div>
-        <div class="sticker" aria-hidden="true"><small>Ny bok</small><b>179 kr</b></div>
+        <div class="sticker" id="priceSticker" aria-hidden="true"><small>Ny bok</small><b>179 kr</b></div>
       </div>
     </div>
 
@@ -772,9 +779,11 @@
             <p class="title">Under Ytan</p>
             <p class="byline">Nathalie Eriksson och Simon Jonhed</p>
             <div class="price-row">
-              <span class="amount">179 kr</span>
+              <span class="was" id="priceWas" hidden>179 kr</span>
+              <span class="amount" id="priceAmount">179 kr</span>
               <span class="unit">/ exemplar + frakt</span>
             </div>
+            <p class="sale-note" id="saleNote" hidden></p>
             <ul class="book-facts">
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Bilderbok med en guide för samtal hemma</li>
               <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10l4 4 8-8"/></svg> Skriven för barn, gärna tillsammans med en vuxen</li>
@@ -923,12 +932,73 @@
   /* ---------- nav scroll state ---------- */
   const header = document.getElementById('siteHeader');
 
-  /* ---------- julbanner: tas bort efter sista beställningsdag ---------- */
-  const promoBar = document.getElementById('promoBar');
-  if (promoBar && new Date() > new Date(promoBar.dataset.until + 'T23:59:59')) {
-    promoBar.remove();
-    document.body.classList.remove('has-promo');
+  /* ---------- julrea: priset styrs av dagens datum (svensk tid) ----------
+     före 1/12: banner om att rean kommer, vanligt pris
+     1–24/12:   julpris + julrea-länkarna i Stripe
+     efter 24/12: vanligt pris, bannern försvinner */
+  const ORDINARY_PRICE = 179;
+  const JULREA = {
+    start: '2026-12-01', end: '2026-12-24', lastXmasOrder: '2026-12-15', price: 149,
+    // Stripe-betalningslänkar (LIVE) för julpriset 149 kr, frakt 49 kr ingår
+    links: {
+      1: "https://buy.stripe.com/aFa00c8sd40q7tJ7V3g7e08", // 198 kr
+      2: "https://buy.stripe.com/6oU8wI7o99kKcO3grzg7e09", // 347 kr
+      3: "https://buy.stripe.com/dRm00c6k51SicO3grzg7e0a", // 496 kr
+      4: "https://buy.stripe.com/bJe4gsfUF9kK5lB1wFg7e0b"  // 645 kr
+    }
+  };
+  function todayInSweden(){
+    // För att förhandsgranska lokalt: ?testdatum=2026-12-05 (fungerar bara på den egna datorn)
+    const test = new URLSearchParams(location.search).get('testdatum');
+    if (test && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return test;
+    return new Intl.DateTimeFormat('sv-SE', {timeZone:'Europe/Stockholm', year:'numeric', month:'2-digit', day:'2-digit'}).format(new Date());
   }
+  const TODAY = todayInSweden();
+  const SALE_PHASE = TODAY < JULREA.start ? 'before' : (TODAY <= JULREA.end ? 'sale' : 'after');
+  const ON_SALE = SALE_PHASE === 'sale';
+  const BOOK_PRICE = ON_SALE ? JULREA.price : ORDINARY_PRICE; // kr per exemplar
+
+  (function applySale(){
+    const promoBar = document.getElementById('promoBar');
+    const setPromo = (long, short, cta) => {
+      document.getElementById('promoLong').innerHTML = long;
+      document.getElementById('promoShort').innerHTML = short;
+      document.getElementById('promoCta').textContent = cta;
+    };
+    const saleNote = document.getElementById('saleNote');
+    const beforeXmas = TODAY <= JULREA.lastXmasOrder;
+
+    if (SALE_PHASE === 'before') {
+      setPromo(`<b>Julrea 1–24 december:</b> Under Ytan för ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr).`,
+               `<b>Julrea 1–24/12:</b> ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr)`, 'Se boken');
+      saleNote.innerHTML = `<span class="sale-badge">Snart julrea</span>Den 1–24 december kostar boken <b>${JULREA.price} kr</b>.`;
+      saleNote.hidden = false;
+    } else if (ON_SALE) {
+      if (TODAY === JULREA.end) {
+        setPromo(`<b>Sista dagen med julpris!</b> Under Ytan för ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr) – bara idag.`,
+                 `<b>Sista dagen:</b> julpris ${JULREA.price} kr`, 'Beställ nu');
+      } else if (TODAY === JULREA.lastXmasOrder) {
+        setPromo(`<b>Sista dagen för leverans före jul!</b> Julpris ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr).`,
+                 `<b>Sista dagen</b> för leverans före jul · ${JULREA.price} kr`, 'Beställ nu');
+      } else if (beforeXmas) {
+        setPromo(`<b>Julrea – ${JULREA.price} kr</b> (ord. ${ORDINARY_PRICE} kr) t.o.m. 24 december. Beställ senast 15 december för leverans före jul.`,
+                 `<b>Julrea ${JULREA.price} kr</b> · beställ senast 15/12 för leverans före jul`, 'Beställ nu');
+      } else {
+        setPromo(`<b>Julrea – ${JULREA.price} kr</b> (ord. ${ORDINARY_PRICE} kr). Gäller t.o.m. 24 december.`,
+                 `<b>Julrea ${JULREA.price} kr</b> t.o.m. 24/12`, 'Beställ nu');
+      }
+      document.querySelectorAll('.js-price').forEach(el => el.textContent = JULREA.price);
+      document.getElementById('priceSticker').innerHTML = `<small>Julpris</small><b>${JULREA.price} kr</b><s>${ORDINARY_PRICE} kr</s>`;
+      document.getElementById('priceAmount').textContent = `${JULREA.price} kr`;
+      document.getElementById('priceWas').hidden = false;
+      saleNote.innerHTML = `<span class="sale-badge">Julrea</span>Julpriset gäller t.o.m. <b>24 december</b>.`
+        + (beforeXmas ? ` Beställ senast 15 december för leverans före jul.` : '');
+      saleNote.hidden = false;
+    } else {
+      promoBar.remove();
+      document.body.classList.remove('has-promo');
+    }
+  })();
 
   function onScroll(){ header.classList.toggle('scrolled', window.scrollY > 24); }
   window.addEventListener('scroll', onScroll, {passive:true});
@@ -1050,12 +1120,13 @@
   const OWNER_EMAIL = "tidvattenuf.info@gmail.com";
   const SWISH_NUMBER = "123 295 94 76";
   // Stripe-betalningslänkar (LIVE) – en per antal böcker, frakt 49 kr ingår i varje
-  const STRIPE_LINKS = {
+  const ORDINARY_LINKS = {
     1: "https://buy.stripe.com/00w8wI6k57cC7tJ1wFg7e04", // 228 kr
     2: "https://buy.stripe.com/bJe7sEdMx0OeeWbejrg7e05", // 407 kr
     3: "https://buy.stripe.com/6oUaEQ37T0OeaFV7V3g7e06", // 586 kr
     4: "https://buy.stripe.com/bJe14g9wh40q6pF0sBg7e07"  // 765 kr
   };
+  const STRIPE_LINKS = ON_SALE ? JULREA.links : ORDINARY_LINKS; // julrea-länkarna 1–24 december
   /* ========================================================= */
 
   if (window.emailjs && EMAILJS_PUBLIC_KEY !== "DIN_PUBLIC_KEY") {
@@ -1067,11 +1138,11 @@
   const cardNote = document.getElementById('cardNote');
   const errorBox = document.getElementById('formError');
   const submitBtn = document.getElementById('submitBtn');
-  const BOOK_PRICE = 179;  // kr per exemplar
-  const SHIPPING = 49;     // kr per beställning, oavsett antal
+  const SHIPPING = 49;     // kr per beställning, oavsett antal (BOOK_PRICE sätts av julrea-koden ovan)
 
   /* ---------- live-summa ---------- */
   const qtySelect = document.getElementById('qty');
+  for (const opt of qtySelect.options) opt.textContent = `${opt.value} exemplar – ${BOOK_PRICE * Number(opt.value)} kr`;
   const totalEl = document.getElementById('orderTotal');
   const totalNoteEl = document.getElementById('orderTotalNote');
   function updateTotal(){
