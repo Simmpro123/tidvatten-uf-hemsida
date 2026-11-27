@@ -27,6 +27,8 @@ Efter varje ändring av sidan:
 1. Commit med ett kort meddelande på svenska och `git push` till `origin main`. Det publicerar sidan på tidvattenuf.se automatiskt (GitHub Pages, ca 1 min). Verifiera att live-`index.html` matchar lokalt.
 2. Netlify (gamla adressen) uppdateras inte längre vid varje ändring. Planen när krediterna fylls på i november: en sista deploy med `_redirects` (`/* https://tidvattenuf.se/:splat 301!`) så att gamla länkar skickas till nya domänen. Deploy-kommando: kopiera **bara** `index.html` + `assets/` (+ ev. `_redirects`) till en tom mapp och kör `netlify deploy --prod --dir <mappen> --site 3caa8058-9d69-4f20-9bf8-15653a281116`.
 
+Julbanner (`#promoBar` överst i `<header>`, sedan 2026-11-27): skriptet tar bort den automatiskt när `data-until` (2026-12-15) har passerat. Koden (CSS `.promo-bar`, `body.has-promo`, skriptet) kan rensas bort efter jul. Lokala grenen `jul-prototyp` har även kundmejlets "leveranstid 2–4 dagar" – väntar på användarens OK innan den läggs i EmailJS.
+
 Snäckan i loggan (`assets/logo-mark.png`) är hämtad från tidvatten.netlify.app – byt inte ut den.
 
 Lägg aldrig in hemliga nycklar (t.ex. Stripe `sk_...`) i koden – repot är offentligt. Publika nycklar (Stripe `pk_...`, EmailJS public key) är okej.
