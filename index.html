@@ -93,7 +93,7 @@
   /* Julbanner överst – fälls ihop när man scrollar, döljs av skriptet efter sista beställningsdag */
   .promo-bar{
     display:block; background:var(--tide-deep); color:#fff; text-decoration:none; text-align:center;
-    font-size:0.9rem; line-height:1.4; padding:10px 20px; max-height:80px; overflow:hidden;
+    font-size:1.02rem; line-height:1.4; padding:12px 20px; max-height:90px; overflow:hidden; text-wrap:balance;
     transition:max-height .35s ease, padding .35s ease;
   }
   .promo-bar b{font-weight:600;}
@@ -102,9 +102,9 @@
   .promo-bar:hover .promo-cta{text-decoration-color:#fff;}
   .promo-bar .promo-short{display:none;}
   header.scrolled .promo-bar{max-height:0; padding-top:0; padding-bottom:0;}
-  body.has-promo .hero{padding-top:208px;}
+  body.has-promo .hero{padding-top:216px;}
   @media (max-width:560px){
-    .promo-bar{font-size:0.85rem; padding:9px 16px;}
+    .promo-bar{font-size:0.93rem; padding:10px 16px;}
     .promo-bar .promo-long{display:none;}
     .promo-bar .promo-short{display:inline;}
     .promo-bar .promo-cta{display:none;}
@@ -544,7 +544,7 @@
   /* ---------- responsive ---------- */
   @media (max-width:960px){
     .hero{padding:128px 0 0;}
-    body.has-promo .hero{padding-top:166px;}
+    body.has-promo .hero{padding-top:176px;}
     .hero .wrap{grid-template-columns:1fr; gap:48px;}
     .hero-art{order:-1;}
 
@@ -970,22 +970,22 @@
 
     if (SALE_PHASE === 'before') {
       setPromo(`<b>Julrea 1–24 december:</b> Under Ytan för ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr).`,
-               `<b>Julrea 1–24/12:</b> ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr)`, 'Se boken');
+               `<b>Julrea 1–24/12:</b> ${JULREA.price}&nbsp;kr (ord.&nbsp;${ORDINARY_PRICE}&nbsp;kr)`, 'Se boken');
       saleNote.innerHTML = `<span class="sale-badge">Snart julrea</span>Den 1–24 december kostar boken <b>${JULREA.price} kr</b>.`;
       saleNote.hidden = false;
     } else if (ON_SALE) {
       if (TODAY === JULREA.end) {
         setPromo(`<b>Sista dagen med julpris!</b> Under Ytan för ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr) – bara idag.`,
-                 `<b>Sista dagen:</b> julpris ${JULREA.price} kr`, 'Beställ nu');
+                 `<b>Sista dagen:</b> julpris ${JULREA.price}&nbsp;kr`, 'Beställ nu');
       } else if (TODAY === JULREA.lastXmasOrder) {
         setPromo(`<b>Sista dagen för leverans före jul!</b> Julpris ${JULREA.price} kr (ord. ${ORDINARY_PRICE} kr).`,
-                 `<b>Sista dagen</b> för leverans före jul · ${JULREA.price} kr`, 'Beställ nu');
+                 `<b>Sista dagen</b> för leverans före&nbsp;jul · ${JULREA.price}&nbsp;kr`, 'Beställ nu');
       } else if (beforeXmas) {
         setPromo(`<b>Julrea – ${JULREA.price} kr</b> (ord. ${ORDINARY_PRICE} kr) t.o.m. 24 december. Beställ senast 15 december för leverans före jul.`,
-                 `<b>Julrea ${JULREA.price} kr</b> · beställ senast 15/12 för leverans före jul`, 'Beställ nu');
+                 `<b>Julrea ${JULREA.price}&nbsp;kr</b> · beställ senast 15/12 för leverans före&nbsp;jul`, 'Beställ nu');
       } else {
         setPromo(`<b>Julrea – ${JULREA.price} kr</b> (ord. ${ORDINARY_PRICE} kr). Gäller t.o.m. 24 december.`,
-                 `<b>Julrea ${JULREA.price} kr</b> t.o.m. 24/12`, 'Beställ nu');
+                 `<b>Julrea ${JULREA.price}&nbsp;kr</b> t.o.m.&nbsp;24/12`, 'Beställ nu');
       }
       document.querySelectorAll('.js-price').forEach(el => el.textContent = JULREA.price);
       document.getElementById('priceSticker').innerHTML = `<small>Julpris</small><b>${JULREA.price} kr</b><s>${ORDINARY_PRICE} kr</s>`;
