@@ -89,6 +89,26 @@
     transition:padding .3s ease;
   }
   header.scrolled .nav{padding:12px 32px;}
+
+  /* Julbanner överst – fälls ihop när man scrollar, döljs av skriptet efter sista beställningsdag */
+  .promo-bar{
+    display:block; background:var(--tide-deep); color:#fff; text-decoration:none; text-align:center;
+    font-size:0.9rem; line-height:1.4; padding:10px 20px; max-height:80px; overflow:hidden;
+    transition:max-height .35s ease, padding .35s ease;
+  }
+  .promo-bar b{font-weight:600;}
+  .promo-bar .promo-star{color:var(--blush); margin-right:6px;}
+  .promo-bar .promo-cta{margin-left:10px; text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--shell-soft); white-space:nowrap;}
+  .promo-bar:hover .promo-cta{text-decoration-color:#fff;}
+  .promo-bar .promo-short{display:none;}
+  header.scrolled .promo-bar{max-height:0; padding-top:0; padding-bottom:0;}
+  body.has-promo .hero{padding-top:208px;}
+  @media (max-width:560px){
+    .promo-bar{font-size:0.85rem; padding:9px 16px;}
+    .promo-bar .promo-long{display:none;}
+    .promo-bar .promo-short{display:inline;}
+    .promo-bar .promo-cta{display:none;}
+  }
   .brand{
     font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem;
     text-decoration:none; color:var(--tide-deep);
@@ -518,6 +538,7 @@
   /* ---------- responsive ---------- */
   @media (max-width:960px){
     .hero{padding:128px 0 0;}
+    body.has-promo .hero{padding-top:166px;}
     .hero .wrap{grid-template-columns:1fr; gap:48px;}
     .hero-art{order:-1;}
 
@@ -549,9 +570,12 @@
   }
 </style>
 </head>
-<body>
+<body class="has-promo">
 
 <header id="siteHeader">
+  <a href="#kop" class="promo-bar" id="promoBar" data-until="2026-12-15">
+    <span class="promo-star" aria-hidden="true">★</span><span class="promo-long"><b>Den perfekta julklappen.</b> Beställ senast 15 december för leverans före jul.</span><span class="promo-short"><b>Julklapp?</b> Beställ senast 15/12 för leverans före jul.</span><span class="promo-cta">Beställ här</span>
+  </a>
   <div class="nav">
     <a href="#top" class="brand"><img src="assets/logo-mark.png" alt="" class="logo-mark"><img src="assets/wordmark.png" alt="Tidvatten UF" class="wordmark" width="141" height="20"></a>
     <nav class="primary-nav" aria-label="Huvudmeny">
@@ -898,6 +922,14 @@
 <script>
   /* ---------- nav scroll state ---------- */
   const header = document.getElementById('siteHeader');
+
+  /* ---------- julbanner: tas bort efter sista beställningsdag ---------- */
+  const promoBar = document.getElementById('promoBar');
+  if (promoBar && new Date() > new Date(promoBar.dataset.until + 'T23:59:59')) {
+    promoBar.remove();
+    document.body.classList.remove('has-promo');
+  }
+
   function onScroll(){ header.classList.toggle('scrolled', window.scrollY > 24); }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
